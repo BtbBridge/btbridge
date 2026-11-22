@@ -16,6 +16,7 @@ import customtkinter as ctk
 import adb_manager
 from audio_capture import LoopbackDevice, WasapiLoopbackCapture, list_loopback_devices
 import audio_control
+import i18n
 from protocol import DEFAULT_PORT
 from server import AudioBridgeServer, get_local_ipv4_addresses
 from tray import TrayController
@@ -107,7 +108,9 @@ class BTBridgeApp(ctk.CTk):
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("dark-blue")
 
-        self.title("BTBridge — USB & Wi-Fi Ses Köprüsü")
+        self._lang, _ = i18n.load_language()
+
+        self.title(self._t("window_title"))
         self.geometry("680x630")
         self.minsize(620, 580)
         self.configure(fg_color=BG_ROOT)
@@ -144,6 +147,7 @@ class BTBridgeApp(ctk.CTk):
             on_toggle_stream=lambda: self.after(0, self._toggle_streaming),
             on_quit=lambda: self.after(0, self._quit_completely),
             is_streaming=lambda: self._streaming,
+            translate=lambda key: self._t(key),
         )
 
         self._build_ui()
@@ -153,16 +157,19 @@ class BTBridgeApp(ctk.CTk):
         try:
             self._tray.start()
         except Exception as exc:
-            self.log(f"Sistem tepsisi başlatılamadı: {exc}")
+            self.log(self._t("log_tray_err", err=exc))
 
         self.protocol("WM_DELETE_WINDOW", self._hide_to_tray)
         self.after(33, self._ui_tick)
+
+    def _t(self, key: str, **kwargs) -> str:
+        return i18n.tr(self._lang, key, **kwargs)
 
     def _build_ui(self) -> None:
         container = ctk.CTkFrame(self, fg_color="transparent")
         container.pack(fill="both", expand=True, padx=16, pady=12)
 
-        # Üst Başlık & Durum Rozeti
+        # Üst Başlık, Dil Seçici & Durum Rozeti
         header = ctk.CTkFrame(container, fg_color=BG_CARD, corner_radius=14, border_width=1, border_color=BORDER_COLOR)
         header.pack(fill="x", pady=(0, 8))
 
@@ -174,16 +181,17 @@ class BTBridgeApp(ctk.CTk):
             font=("Segoe UI", 21, "bold"),
             text_color=TEXT_PRIMARY,
         ).pack(anchor="w")
-        ctk.CTkLabel(
+        self._lbl_app_subtitle = ctk.CTkLabel(
             title_col,
-            text="Windows Sistem Sesini Sıfıra Yakın Gecikmeyle Android'e Aktar",
+            text=self._t("app_subtitle"),
             font=("Segoe UI", 11),
             text_color=TEXT_MUTED,
-        ).pack(anchor="w")
+        )
+        self._lbl_app_subtitle.pack(anchor="w")
 
         self._status_badge = ctk.CTkLabel(
             header,
-            text="● Hazır",
+            text=self._t("status_ready"),
             font=("Segoe UI", 12, "bold"),
             text_color=TEXT_MUTED,
             fg_color=BG_PANEL,
@@ -191,36 +199,58 @@ class BTBridgeApp(ctk.CTk):
             padx=12,
             pady=5,
         )
-        self._status_badge.pack(side="right", padx=14)
+        self._status_badge.pack(side="right", padx=(6, 14))
+
+        self._lang_seg = ctk.CTkSegmentedButton(
+            header,
+            values=["TR", "EN"],
+            width=76,
+            height=28,
+            font=("Segoe UI", 11, "bold"),
+            selected_color=ACCENT_SKY,
+            selected_hover_color="#0284C7",
+            unselected_color=BG_PANEL,
+            fg_color=BG_PANEL,
+            command=self._on_language_change,
+        )
+        self._lang_seg.set(self._lang.upper())
+        self._lang_seg.pack(side="right", padx=(0, 4))
 
         # Telemetri Kartları
         stats_row = ctk.CTkFrame(container, fg_color="transparent")
         stats_row.pack(fill="x", pady=(0, 8))
         stats_row.grid_columnconfigure((0, 1, 2), weight=1)
 
-        self._lbl_latency = self._make_stat_card(stats_row, 0, "Gecikme (RTT)", "-- ms", ACCENT_SKY)
-        self._lbl_bitrate = self._make_stat_card(stats_row, 1, "Veri Hızı", "0 kbps", ACCENT_EMERALD)
-        self._lbl_client = self._make_stat_card(stats_row, 2, "Bağlı Cihaz", "Bekleniyor", TEXT_PRIMARY)
+        self._lbl_latency_title, self._lbl_latency = self._make_stat_card(
+            stats_row, 0, self._t("card_latency"), "-- ms", ACCENT_SKY
+        )
+        self._lbl_bitrate_title, self._lbl_bitrate = self._make_stat_card(
+            stats_row, 1, self._t("card_bitrate"), "0 kbps", ACCENT_EMERALD
+        )
+        self._lbl_client_title, self._lbl_client = self._make_stat_card(
+            stats_row, 2, self._t("card_client"), self._t("waiting"), TEXT_PRIMARY
+        )
 
         # Ses Cihazı Seçimi ve PC Susturma Anahtarı
         dev_card = ctk.CTkFrame(container, fg_color=BG_CARD, corner_radius=14, border_width=1, border_color=BORDER_COLOR)
         dev_card.pack(fill="x", pady=(0, 8))
 
-        ctk.CTkLabel(
+        self._lbl_source_title = ctk.CTkLabel(
             dev_card,
-            text="WASAPI Loopback Ses Kaynağı",
+            text=self._t("source_title"),
             font=("Segoe UI", 12, "bold"),
             text_color=TEXT_PRIMARY,
-        ).pack(anchor="w", padx=14, pady=(10, 4))
+        )
+        self._lbl_source_title.pack(anchor="w", padx=14, pady=(10, 4))
 
         dev_row = ctk.CTkFrame(dev_card, fg_color="transparent")
         dev_row.pack(fill="x", padx=14, pady=(0, 8))
 
-        self._device_var = ctk.StringVar(value="Cihaz aranıyor...")
+        self._device_var = ctk.StringVar(value=self._t("searching_devices"))
         self._device_menu = ctk.CTkOptionMenu(
             dev_row,
             variable=self._device_var,
-            values=["Cihaz aranıyor..."],
+            values=[self._t("searching_devices")],
             fg_color=BG_PANEL,
             button_color="#283548",
             button_hover_color="#334155",
@@ -231,9 +261,9 @@ class BTBridgeApp(ctk.CTk):
         )
         self._device_menu.pack(side="left", fill="x", expand=True, padx=(0, 10))
 
-        ctk.CTkButton(
+        self._btn_refresh = ctk.CTkButton(
             dev_row,
-            text="Yenile",
+            text=self._t("refresh"),
             width=88,
             height=34,
             fg_color=BG_PANEL,
@@ -241,7 +271,8 @@ class BTBridgeApp(ctk.CTk):
             border_width=1,
             border_color=BORDER_COLOR,
             command=self._refresh_devices,
-        ).pack(side="right")
+        )
+        self._btn_refresh.pack(side="right")
 
         mute_row = ctk.CTkFrame(dev_card, fg_color="transparent")
         mute_row.pack(fill="x", padx=14, pady=(0, 10))
@@ -249,7 +280,7 @@ class BTBridgeApp(ctk.CTk):
         self._mute_pc_var = ctk.BooleanVar(value=True)
         self._mute_switch = ctk.CTkSwitch(
             mute_row,
-            text="Yayın sırasında PC kulaklığını/hoparlörünü sustur",
+            text=self._t("mute_switch"),
             variable=self._mute_pc_var,
             progress_color=ACCENT_EMERALD,
             font=("Segoe UI", 12, "bold"),
@@ -260,7 +291,7 @@ class BTBridgeApp(ctk.CTk):
 
         self._lbl_mute_hint = ctk.CTkLabel(
             mute_row,
-            text="Donanım susturma hazırlanıyor...",
+            text=self._t("mute_preparing"),
             font=("Segoe UI", 11),
             text_color=TEXT_MUTED,
             anchor="w",
@@ -274,23 +305,24 @@ class BTBridgeApp(ctk.CTk):
         mode_top = ctk.CTkFrame(mode_card, fg_color="transparent")
         mode_top.pack(fill="x", padx=14, pady=(10, 6))
 
-        ctk.CTkLabel(
+        self._lbl_mode_title = ctk.CTkLabel(
             mode_top,
-            text="Bağlantı Modu",
+            text=self._t("mode_title"),
             font=("Segoe UI", 12, "bold"),
             text_color=TEXT_PRIMARY,
-        ).pack(side="left")
+        )
+        self._lbl_mode_title.pack(side="left")
 
         self._mode_seg = ctk.CTkSegmentedButton(
             mode_top,
-            values=["USB (ADB Reverse)", "Yerel Wi-Fi"],
+            values=[self._t("mode_usb"), self._t("mode_wifi")],
             command=self._on_mode_change,
             selected_color=ACCENT_EMERALD,
             selected_hover_color=ACCENT_EMERALD_HOVER,
             unselected_color=BG_PANEL,
             fg_color=BG_PANEL,
         )
-        self._mode_seg.set("USB (ADB Reverse)")
+        self._mode_seg.set(self._t("mode_usb"))
         self._mode_seg.pack(side="right")
 
         self._usb_panel = ctk.CTkFrame(mode_card, fg_color="transparent")
@@ -298,7 +330,7 @@ class BTBridgeApp(ctk.CTk):
 
         self._lbl_adb_info = ctk.CTkLabel(
             self._usb_panel,
-            text="ADB kontrol ediliyor...",
+            text=self._t("adb_checking"),
             font=("Segoe UI", 11),
             text_color=TEXT_MUTED,
             anchor="w",
@@ -307,7 +339,7 @@ class BTBridgeApp(ctk.CTk):
 
         self._btn_install_apk = ctk.CTkButton(
             self._usb_panel,
-            text="Telefona APK Kur",
+            text=self._t("btn_install_apk"),
             height=32,
             fg_color="#4F46E5",
             hover_color="#4338CA",
@@ -318,7 +350,7 @@ class BTBridgeApp(ctk.CTk):
 
         self._btn_usb_bridge = ctk.CTkButton(
             self._usb_panel,
-            text="USB Köprüsünü Başlat",
+            text=self._t("btn_usb_bridge"),
             height=32,
             fg_color="#0284C7",
             hover_color="#0369A1",
@@ -329,10 +361,10 @@ class BTBridgeApp(ctk.CTk):
 
         self._wifi_panel = ctk.CTkFrame(mode_card, fg_color="transparent")
         ips = get_local_ipv4_addresses()
-        ip_text = ", ".join(ips) if ips else "Yerel IP bulunamadı"
+        ip_text = ", ".join(ips) if ips else self._t("no_local_ip")
         self._lbl_wifi_info = ctk.CTkLabel(
             self._wifi_panel,
-            text=f"Wi-Fi Modu: ADPCM + UDP FEC aktif • IP: {ip_text} (Port: {DEFAULT_PORT})",
+            text=self._t("wifi_info", ips=ip_text, port=DEFAULT_PORT),
             font=("Segoe UI", 11),
             text_color=ACCENT_SKY,
             anchor="w",
@@ -342,7 +374,7 @@ class BTBridgeApp(ctk.CTk):
         # Ana Yayın Butonu
         self._btn_toggle = ctk.CTkButton(
             container,
-            text="Yayını Başlat",
+            text=self._t("btn_start"),
             height=42,
             corner_radius=12,
             fg_color=ACCENT_EMERALD,
@@ -355,24 +387,26 @@ class BTBridgeApp(ctk.CTk):
         # Canlı VU Metre
         vu_card = ctk.CTkFrame(container, fg_color=BG_CARD, corner_radius=14, border_width=1, border_color=BORDER_COLOR)
         vu_card.pack(fill="x", pady=(0, 8))
-        ctk.CTkLabel(
+        self._lbl_vu_title = ctk.CTkLabel(
             vu_card,
-            text="Canlı Ses Seviyesi (48 kHz Stereo PCM)",
+            text=self._t("vu_title"),
             font=("Segoe UI", 11, "bold"),
             text_color=TEXT_MUTED,
-        ).pack(anchor="w", padx=14, pady=(8, 4))
+        )
+        self._lbl_vu_title.pack(anchor="w", padx=14, pady=(8, 4))
         self._vu_meter = StereoVuMeter(vu_card)
         self._vu_meter.pack(fill="x", padx=14, pady=(0, 10))
 
         # Log Alanı
         log_card = ctk.CTkFrame(container, fg_color=BG_CARD, corner_radius=14, border_width=1, border_color=BORDER_COLOR)
         log_card.pack(fill="both", expand=True)
-        ctk.CTkLabel(
+        self._lbl_log_title = ctk.CTkLabel(
             log_card,
-            text="Sistem Günlüğü",
+            text=self._t("log_title"),
             font=("Segoe UI", 11, "bold"),
             text_color=TEXT_MUTED,
-        ).pack(anchor="w", padx=14, pady=(8, 4))
+        )
+        self._lbl_log_title.pack(anchor="w", padx=14, pady=(8, 4))
         self._log_box = ctk.CTkTextbox(
             log_card,
             height=96,
@@ -384,16 +418,68 @@ class BTBridgeApp(ctk.CTk):
         )
         self._log_box.pack(fill="both", expand=True, padx=14, pady=(0, 10))
 
-    def _make_stat_card(self, parent, col: int, title: str, initial: str, color: str) -> ctk.CTkLabel:
+    def _make_stat_card(
+        self, parent, col: int, title: str, initial: str, color: str
+    ) -> tuple[ctk.CTkLabel, ctk.CTkLabel]:
         card = ctk.CTkFrame(parent, fg_color=BG_CARD, corner_radius=12, border_width=1, border_color=BORDER_COLOR)
         padx = (0, 6) if col == 0 else ((6, 0) if col == 2 else (4, 4))
         card.grid(row=0, column=col, sticky="nsew", padx=padx)
-        ctk.CTkLabel(card, text=title, font=("Segoe UI", 11), text_color=TEXT_MUTED).pack(
-            anchor="w", padx=12, pady=(8, 1)
-        )
-        lbl = ctk.CTkLabel(card, text=initial, font=("Segoe UI", 15, "bold"), text_color=color)
-        lbl.pack(anchor="w", padx=12, pady=(0, 8))
-        return lbl
+        title_lbl = ctk.CTkLabel(card, text=title, font=("Segoe UI", 11), text_color=TEXT_MUTED)
+        title_lbl.pack(anchor="w", padx=12, pady=(8, 1))
+        val_lbl = ctk.CTkLabel(card, text=initial, font=("Segoe UI", 15, "bold"), text_color=color)
+        val_lbl.pack(anchor="w", padx=12, pady=(0, 8))
+        return title_lbl, val_lbl
+
+    def _on_language_change(self, selected: str) -> None:
+        new_lang = selected.strip().lower()
+        if new_lang not in i18n.SUPPORTED_LANGUAGES or new_lang == self._lang:
+            return
+        self._lang = new_lang
+        i18n.save_language(new_lang)
+        self._apply_language()
+
+    def _apply_language(self) -> None:
+        self.title(self._t("window_title"))
+        self._lbl_app_subtitle.configure(text=self._t("app_subtitle"))
+        self._lbl_latency_title.configure(text=self._t("card_latency"))
+        self._lbl_bitrate_title.configure(text=self._t("card_bitrate"))
+        self._lbl_client_title.configure(text=self._t("card_client"))
+        self._lbl_source_title.configure(text=self._t("source_title"))
+        self._btn_refresh.configure(text=self._t("refresh"))
+        self._mute_switch.configure(text=self._t("mute_switch"))
+        self._lbl_mode_title.configure(text=self._t("mode_title"))
+        self._btn_install_apk.configure(text=self._t("btn_install_apk"))
+        self._btn_usb_bridge.configure(text=self._t("btn_usb_bridge"))
+        self._lbl_vu_title.configure(text=self._t("vu_title"))
+        self._lbl_log_title.configure(text=self._t("log_title"))
+
+        is_usb = self._mode_seg.get().startswith("USB")
+        self._mode_seg.configure(values=[self._t("mode_usb"), self._t("mode_wifi")])
+        self._mode_seg.set(self._t("mode_usb") if is_usb else self._t("mode_wifi"))
+        if not is_usb:
+            ips = get_local_ipv4_addresses()
+            ip_text = ", ".join(ips) if ips else self._t("no_local_ip")
+            self._lbl_wifi_info.configure(text=self._t("wifi_info", ips=ip_text, port=DEFAULT_PORT))
+
+        if not self._devices:
+            self._device_menu.configure(values=[self._t("no_device_found")])
+            self._device_var.set(self._t("no_device_found"))
+
+        if not self._streaming:
+            self._btn_toggle.configure(text=self._t("btn_start"))
+            self._status_badge.configure(text=self._t("status_ready"))
+            self._lbl_client.configure(text=self._t("waiting"))
+        else:
+            self._btn_toggle.configure(text=self._t("btn_stop"))
+
+        adb_path = adb_manager.find_adb()
+        if adb_path is None:
+            self._lbl_adb_info.configure(text=self._t("adb_missing"), text_color=ACCENT_ROSE)
+        else:
+            self._lbl_adb_info.configure(text=self._t("adb_ready", name=adb_path.name), text_color=TEXT_MUTED)
+
+        self._update_mute_hint()
+        self._tray.refresh_menu()
 
     def log(self, message: str) -> None:
         stamp = datetime.now().strftime("%H:%M:%S")
@@ -406,9 +492,9 @@ class BTBridgeApp(ctk.CTk):
         else:
             self._usb_panel.pack_forget()
             ips = get_local_ipv4_addresses()
-            ip_text = ", ".join(ips) if ips else "Yerel IP bulunamadı"
+            ip_text = ", ".join(ips) if ips else self._t("no_local_ip")
             self._lbl_wifi_info.configure(
-                text=f"Wi-Fi Modu: ADPCM + UDP FEC aktif • IP: {ip_text} (Port: {DEFAULT_PORT})"
+                text=self._t("wifi_info", ips=ip_text, port=DEFAULT_PORT)
             )
             self._wifi_panel.pack(fill="x", padx=14, pady=(2, 10))
 
@@ -417,7 +503,7 @@ class BTBridgeApp(ctk.CTk):
             self._devices = list_loopback_devices()
         except Exception as exc:
             self._devices = []
-            self.log(f"Ses cihazları listelenemedi: {exc}")
+            self.log(self._t("log_devices_err", err=exc))
 
         try:
             self._endpoints = audio_control.list_render_endpoints()
@@ -426,8 +512,8 @@ class BTBridgeApp(ctk.CTk):
 
         self._device_map.clear()
         if not self._devices:
-            self._device_menu.configure(values=["Aktif WASAPI çıkış cihazı bulunamadı"])
-            self._device_var.set("Aktif WASAPI çıkış cihazı bulunamadı")
+            self._device_menu.configure(values=[self._t("no_device_found")])
+            self._device_var.set(self._t("no_device_found"))
             self._update_mute_hint()
             return
 
@@ -440,12 +526,12 @@ class BTBridgeApp(ctk.CTk):
         self._device_menu.configure(values=labels)
         self._device_var.set(labels[0])
         self._update_mute_hint()
-        self.log(f"{len(labels)} adet WASAPI Loopback ses cihazı bulundu.")
+        self.log(self._t("log_devices_count", count=len(labels)))
 
     def _update_mute_hint(self) -> None:
         if not self._mute_pc_var.get():
             self._lbl_mute_hint.configure(
-                text="Kapalı: Ses hem PC çıkışından hem Bluetooth kulaklıktan çalar.",
+                text=self._t("mute_off"),
                 text_color=TEXT_MUTED,
             )
             return
@@ -453,7 +539,7 @@ class BTBridgeApp(ctk.CTk):
         dev = self._device_map.get(self._device_var.get())
         if dev is None:
             self._lbl_mute_hint.configure(
-                text="Yayın başlarken ses sessiz/sanal çıkışa yönlendirilir.",
+                text=self._t("mute_default"),
                 text_color=TEXT_MUTED,
             )
             return
@@ -465,38 +551,38 @@ class BTBridgeApp(ctk.CTk):
         )
         if sink is not None:
             self._lbl_mute_hint.configure(
-                text=f"Sessiz çıkışa aktarılıyor: {sink.friendly_name} (Windows sesi açık kalır)",
+                text=self._t("mute_route_sink", name=sink.friendly_name),
                 text_color=ACCENT_EMERALD,
             )
             return
 
         if ep is not None and ep.hw_volume:
             self._lbl_mute_hint.configure(
-                text="Donanım ses sıfırlama hazır • Durdurulunca eski ses seviyesi geri döner.",
+                text=self._t("mute_zero_vol"),
                 text_color=ACCENT_SKY,
             )
         elif ep is not None and ep.hw_mute:
             self._lbl_mute_hint.configure(
-                text="Sessiz/sanal çıkış bulunamadı • Donanım susturma kullanılacak.",
+                text=self._t("mute_hw_fallback"),
                 text_color=ACCENT_AMBER,
             )
         else:
             self._lbl_mute_hint.configure(
-                text="Uyarı: Bu cihaz için sessiz çıkış veya susturma yöntemi bulunamadı.",
+                text=self._t("mute_none"),
                 text_color=ACCENT_AMBER,
             )
 
     def _check_adb_status(self) -> None:
         adb_path = adb_manager.find_adb()
         if adb_path is None:
-            self._lbl_adb_info.configure(text="ADB bulunamadı (Kurulum eksik)", text_color=ACCENT_ROSE)
-            self.log("Uyarı: adb.exe bulunamadı. USB modu için ADB gereklidir.")
+            self._lbl_adb_info.configure(text=self._t("adb_missing"), text_color=ACCENT_ROSE)
+            self.log(self._t("log_adb_missing"))
         else:
-            self._lbl_adb_info.configure(text=f"ADB hazır: {adb_path.name}", text_color=TEXT_MUTED)
-            self.log(f"ADB algılandı: {adb_path}")
+            self._lbl_adb_info.configure(text=self._t("adb_ready", name=adb_path.name), text_color=TEXT_MUTED)
+            self.log(self._t("log_adb_detected", path=adb_path))
 
     def _setup_usb_bridge_async(self) -> None:
-        self._btn_usb_bridge.configure(state="disabled", text="Kuruluyor...")
+        self._btn_usb_bridge.configure(state="disabled", text=self._t("btn_usb_setting_up"))
 
         def worker() -> None:
             ok, msg = adb_manager.setup_reverse(DEFAULT_PORT)
@@ -507,14 +593,14 @@ class BTBridgeApp(ctk.CTk):
         threading.Thread(target=worker, daemon=True).start()
 
     def _on_usb_bridge_result(self, ok: bool, msg: str) -> None:
-        self._btn_usb_bridge.configure(state="normal", text="USB Köprüsünü Başlat")
+        self._btn_usb_bridge.configure(state="normal", text=self._t("btn_usb_bridge"))
         if ok:
             self._lbl_adb_info.configure(text=msg, text_color=ACCENT_EMERALD)
         else:
             self._lbl_adb_info.configure(text=msg, text_color=ACCENT_AMBER)
 
     def _install_apk_async(self) -> None:
-        self._btn_install_apk.configure(state="disabled", text="Kuruluyor...")
+        self._btn_install_apk.configure(state="disabled", text=self._t("btn_installing"))
 
         def worker() -> None:
             ok, msg = adb_manager.install_apk()
@@ -524,7 +610,7 @@ class BTBridgeApp(ctk.CTk):
         threading.Thread(target=worker, daemon=True).start()
 
     def _on_install_apk_result(self, ok: bool, msg: str) -> None:
-        self._btn_install_apk.configure(state="normal", text="Telefona APK Kur")
+        self._btn_install_apk.configure(state="normal", text=self._t("btn_install_apk"))
         if ok:
             self._lbl_adb_info.configure(text=msg, text_color=ACCENT_EMERALD)
         else:
@@ -540,7 +626,7 @@ class BTBridgeApp(ctk.CTk):
         selected_label = self._device_var.get()
         device = self._device_map.get(selected_label)
         if device is None:
-            self.log("Hata: Lütfen geçerli bir WASAPI Loopback ses cihazı seçin.")
+            self.log(self._t("log_select_valid"))
             return
 
         is_usb = self._mode_seg.get().startswith("USB")
@@ -549,7 +635,7 @@ class BTBridgeApp(ctk.CTk):
         self._is_usb_mode = is_usb
         self._last_reverse_check = time.monotonic()
 
-        self._btn_toggle.configure(state="disabled", text="Başlatılıyor...")
+        self._btn_toggle.configure(state="disabled", text=self._t("btn_starting"))
 
         def start_worker() -> None:
             if is_usb:
@@ -581,7 +667,7 @@ class BTBridgeApp(ctk.CTk):
                 server.start()
                 capture.start()
             except Exception as exc:
-                self.log(f"Yayın başlatılamadı: {exc}")
+                self.log(self._t("log_start_failed", err=exc))
                 capture.stop()
                 server.stop()
                 self._silencer.restore()
@@ -618,9 +704,7 @@ class BTBridgeApp(ctk.CTk):
                     None,
                 )
                 if sink_lb is not None and self._silencer.activate_silent_route(sink_ep.device_id):
-                    self.log(
-                        f"Windows sesi açık tutuldu, ses sessiz çıkışa aktarıldı: {sink_ep.friendly_name}"
-                    )
+                    self.log(self._t("log_routed_silent", name=sink_ep.friendly_name))
                     return sink_lb
 
             # 2. Öncelik: Donanım ses sıfırlama (Mute ikonu çıkarmadan ses seviyesini sıfırlar)
@@ -629,7 +713,7 @@ class BTBridgeApp(ctk.CTk):
                 and target_ep.hw_volume
                 and self._silencer.activate_hardware_zero_vol(target_ep.device_id)
             ):
-                self.log(f"PC ses seviyesi sıfırlandı: {target_ep.friendly_name}")
+                self.log(self._t("log_zero_vol", name=target_ep.friendly_name))
                 return selected_device
 
             # 3. Son çare: Donanım mute
@@ -638,18 +722,18 @@ class BTBridgeApp(ctk.CTk):
                 and target_ep.hw_mute
                 and self._silencer.activate_hardware_mute(target_ep.device_id)
             ):
-                self.log(f"PC çıkışı susturuldu (donanım mute): {target_ep.friendly_name}")
+                self.log(self._t("log_hw_mute", name=target_ep.friendly_name))
                 return selected_device
 
-            self.log("Uyarı: PC çıkışı susturulamadı, ses her iki cihazdan da çalabilir.")
+            self.log(self._t("log_silence_failed"))
         except Exception as exc:
-            self.log(f"PC susturma uygulanamadı: {exc}")
+            self.log(self._t("log_silence_err", err=exc))
         return selected_device
 
     def _restore_stopped_button(self) -> None:
         self._btn_toggle.configure(
             state="normal",
-            text="Yayını Başlat",
+            text=self._t("btn_start"),
             fg_color=ACCENT_EMERALD,
             hover_color=ACCENT_EMERALD_HOVER,
         )
@@ -660,11 +744,11 @@ class BTBridgeApp(ctk.CTk):
         self._mode_seg.configure(state="disabled")
         self._btn_toggle.configure(
             state="normal",
-            text="Yayını Durdur",
+            text=self._t("btn_stop"),
             fg_color=ACCENT_ROSE,
             hover_color=ACCENT_ROSE_HOVER,
         )
-        self._status_badge.configure(text="● Bağlantı Bekleniyor", text_color=ACCENT_AMBER)
+        self._status_badge.configure(text=self._t("status_waiting"), text_color=ACCENT_AMBER)
 
     def _stop_streaming(self) -> None:
         was_streaming = self._streaming
@@ -678,7 +762,7 @@ class BTBridgeApp(ctk.CTk):
 
         restored = self._silencer.restore()
         if restored:
-            self.log("PC kulaklığı/ses çıkışı eski durumuna döndürüldü.")
+            self.log(self._t("log_restored"))
 
         self._update_vu_levels(0.0, 0.0)
         self._vu_meter.set_levels(0.0, 0.0)
@@ -686,12 +770,12 @@ class BTBridgeApp(ctk.CTk):
         self._mute_switch.configure(state="normal")
         self._mode_seg.configure(state="normal")
         self._restore_stopped_button()
-        self._status_badge.configure(text="● Hazır", text_color=TEXT_MUTED)
+        self._status_badge.configure(text=self._t("status_ready"), text_color=TEXT_MUTED)
         self._lbl_latency.configure(text="-- ms")
         self._lbl_bitrate.configure(text="0 kbps")
-        self._lbl_client.configure(text="Durduruldu" if was_streaming else "Bekleniyor")
+        self._lbl_client.configure(text=self._t("stopped") if was_streaming else self._t("waiting"))
         if was_streaming:
-            self.log("Yayın durduruldu.")
+            self.log(self._t("log_stopped"))
 
     def _update_vu_levels(self, left: float, right: float) -> None:
         with self._vu_lock:
@@ -725,16 +809,16 @@ class BTBridgeApp(ctk.CTk):
             self._vu_meter.set_levels(l_val, r_val)
 
         # Telemetri güncellemesi & USB watchdog
-        tooltip = "BTBridge — Hazır"
+        tooltip = self._t("tray_tooltip_ready")
         if self._streaming and self._server is not None:
             stats = self._server.get_stats()
             if stats.connected:
-                self._status_badge.configure(text="● Bağlı", text_color=ACCENT_EMERALD)
+                self._status_badge.configure(text=self._t("status_connected"), text_color=ACCENT_EMERALD)
                 self._lbl_latency.configure(
-                    text=f"{stats.rtt_ms} ms" if stats.rtt_ms is not None else "Ölçülüyor..."
+                    text=f"{stats.rtt_ms} ms" if stats.rtt_ms is not None else self._t("measuring")
                 )
                 self._lbl_bitrate.configure(text=f"{stats.kbps:.0f} kbps")
-                addr_only = (stats.client_addr or "Bağlı").rsplit(":", 1)[0]
+                addr_only = (stats.client_addr or self._t("connected")).rsplit(":", 1)[0]
                 self._lbl_client.configure(text=f"{addr_only} ({stats.transport_label})")
                 tooltip = (
                     f"BTBridge — {stats.transport_label} ({stats.rtt_ms} ms)"
@@ -742,11 +826,11 @@ class BTBridgeApp(ctk.CTk):
                     else f"BTBridge — {stats.transport_label}"
                 )
             else:
-                self._status_badge.configure(text="● Bağlantı Bekleniyor", text_color=ACCENT_AMBER)
+                self._status_badge.configure(text=self._t("status_waiting"), text_color=ACCENT_AMBER)
                 self._lbl_latency.configure(text="-- ms")
                 self._lbl_bitrate.configure(text="0 kbps")
-                self._lbl_client.configure(text="Bekleniyor")
-                tooltip = "BTBridge — Bağlantı Bekleniyor"
+                self._lbl_client.configure(text=self._t("waiting"))
+                tooltip = self._t("tray_tooltip_waiting")
                 self._maybe_repair_usb_reverse()
 
         if tooltip != self._last_tray_tooltip:
@@ -770,7 +854,7 @@ class BTBridgeApp(ctk.CTk):
                     ok, msg = adb_manager.setup_reverse(DEFAULT_PORT)
                     self._adb_reverse_ready = ok
                     if ok:
-                        self.log(f"USB köprüsü otomatik yenilendi: {msg}")
+                        self.log(self._t("log_usb_repaired", msg=msg))
                     self.after(0, lambda: self._on_usb_bridge_result(ok, msg))
             finally:
                 self._reverse_checking = False

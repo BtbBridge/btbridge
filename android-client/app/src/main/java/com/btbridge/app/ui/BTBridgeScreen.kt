@@ -28,6 +28,7 @@ import androidx.compose.material.icons.rounded.Speed
 import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material.icons.rounded.Usb
 import androidx.compose.material.icons.rounded.Wifi
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -40,6 +41,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -78,7 +80,9 @@ fun BTBridgeScreen(
     onConnectWifi: (ip: String, port: Int) -> Unit,
     onDisconnect: () -> Unit,
     onSelectJitterProfile: (JitterProfile) -> Unit,
+    onSelectLanguage: (AppLanguage) -> Unit = {},
 ) {
+    val s = stringsFor(uiState.language)
     var wifiIpInput by rememberSaveable(uiState.wifiIp) { mutableStateOf(uiState.wifiIp) }
     var wifiPortInput by rememberSaveable(uiState.port) { mutableStateOf(uiState.port.toString()) }
 
@@ -89,10 +93,52 @@ fun BTBridgeScreen(
         ConnectionStatus.DISCONNECTED -> TextMuted
     }
     val statusText = when (uiState.status) {
-        ConnectionStatus.CONNECTED -> "Bağlı"
-        ConnectionStatus.CONNECTING -> "Bağlanıyor"
-        ConnectionStatus.RECONNECTING -> "Yeniden Bağlanıyor"
-        ConnectionStatus.DISCONNECTED -> "Hazır"
+        ConnectionStatus.CONNECTED -> s.statusConnected
+        ConnectionStatus.CONNECTING -> s.statusConnecting
+        ConnectionStatus.RECONNECTING -> s.statusReconnecting
+        ConnectionStatus.DISCONNECTED -> s.statusReady
+    }
+
+    if (uiState.needsLanguageChoice) {
+        AlertDialog(
+            onDismissRequest = { onSelectLanguage(uiState.language) },
+            containerColor = SurfaceDark,
+            titleContentColor = TextPrimary,
+            textContentColor = TextMuted,
+            title = {
+                Text(
+                    text = s.langDialogTitle,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                )
+            },
+            text = {
+                Text(
+                    text = s.langDialogBody,
+                    fontSize = 14.sp,
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = { onSelectLanguage(AppLanguage.TR) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = EmeraldPrimary,
+                        contentColor = Color(0xFF022C22),
+                    ),
+                ) {
+                    Text(s.langTurkish, fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                OutlinedButton(
+                    onClick = { onSelectLanguage(AppLanguage.EN) },
+                    border = BorderStroke(1.dp, SkyAccent),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = SkyAccent),
+                ) {
+                    Text(s.langEnglish, fontWeight = FontWeight.SemiBold)
+                }
+            },
+        )
     }
 
     Scaffold(
@@ -106,13 +152,13 @@ fun BTBridgeScreen(
                 .padding(horizontal = 18.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            // Başlık ve Durum Rozeti
+            // Başlık, Dil Seçici ve Durum Rozeti
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Column {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = "BTBridge",
                         fontSize = 26.sp,
@@ -120,34 +166,59 @@ fun BTBridgeScreen(
                         color = TextPrimary,
                     )
                     Text(
-                        text = "PC -> Bluetooth Ses Köprüsü",
+                        text = s.subtitle,
                         fontSize = 13.sp,
                         color = TextMuted,
                     )
                 }
 
-                Surface(
-                    shape = RoundedCornerShape(20.dp),
-                    color = SurfaceVariantDark,
-                    border = BorderStroke(1.dp, statusColor.copy(alpha = 0.5f)),
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = SurfaceVariantDark,
+                        border = BorderStroke(1.dp, BorderDark),
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(16.dp))
+                            .clickable {
+                                val next = if (uiState.language == AppLanguage.TR) AppLanguage.EN else AppLanguage.TR
+                                onSelectLanguage(next)
+                            },
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .size(8.dp)
-                                .clip(CircleShape)
-                                .background(statusColor),
-                        )
                         Text(
-                            text = statusText,
-                            color = statusColor,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
+                            text = if (uiState.language == AppLanguage.TR) "TR | EN" else "EN | TR",
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                            color = SkyAccent,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold,
                         )
+                    }
+
+                    Surface(
+                        shape = RoundedCornerShape(20.dp),
+                        color = SurfaceVariantDark,
+                        border = BorderStroke(1.dp, statusColor.copy(alpha = 0.5f)),
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(8.dp)
+                                    .clip(CircleShape)
+                                    .background(statusColor),
+                            )
+                            Text(
+                                text = statusText,
+                                color = statusColor,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold,
+                            )
+                        }
                     }
                 }
             }
@@ -189,18 +260,18 @@ fun BTBridgeScreen(
                     Spacer(modifier = Modifier.width(14.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Ses Çıkış Cihazı",
+                            text = s.audioOutputTitle,
                             fontSize = 11.sp,
                             color = TextMuted,
                         )
                         Text(
-                            text = btInfo.deviceName,
+                            text = if (btInfo.isConnected) btInfo.deviceName else s.noBluetoothTitle,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = TextPrimary,
                         )
                         Text(
-                            text = btInfo.typeLabel,
+                            text = if (btInfo.isConnected) btInfo.typeLabel else s.noBluetoothSubtitle,
                             fontSize = 12.sp,
                             color = if (btInfo.isConnected) SkyAccent else TextMuted,
                         )
@@ -215,19 +286,19 @@ fun BTBridgeScreen(
             ) {
                 TelemetryCard(
                     modifier = Modifier.weight(1f),
-                    label = "Gecikme (RTT)",
+                    label = s.latencyLabel,
                     value = uiState.latencyMs?.let { "$it ms" } ?: "-- ms",
                     accent = SkyAccent,
                 )
                 TelemetryCard(
                     modifier = Modifier.weight(1f),
-                    label = "Veri Hızı",
+                    label = s.bitrateLabel,
                     value = "${uiState.bitrateKbps} kbps",
                     accent = EmeraldPrimary,
                 )
                 TelemetryCard(
                     modifier = Modifier.weight(1f),
-                    label = "Tampon",
+                    label = s.bufferLabel,
                     value = "${uiState.bufferFillMs} ms",
                     accent = AmberWarn,
                 )
@@ -249,14 +320,18 @@ fun BTBridgeScreen(
                         Icon(Icons.Rounded.Usb, contentDescription = null, tint = EmeraldPrimary)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Birincil Mod: USB Kablo (ADB Reverse)",
+                            text = s.usbModeTitle,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = TextPrimary,
                         )
                     }
                     Text(
-                        text = uiState.statusMessage,
+                        text = if (uiState.status == ConnectionStatus.DISCONNECTED && uiState.statusMessage.startsWith("Hazır")) {
+                            s.readyHint
+                        } else {
+                            uiState.statusMessage
+                        },
                         fontSize = 12.sp,
                         color = TextMuted,
                     )
@@ -275,7 +350,7 @@ fun BTBridgeScreen(
                         ) {
                             Icon(Icons.Rounded.PowerSettingsNew, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Bağlantıyı Kes", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                            Text(s.disconnect, fontWeight = FontWeight.Bold, fontSize = 15.sp)
                         }
                     } else {
                         Button(
@@ -291,7 +366,7 @@ fun BTBridgeScreen(
                         ) {
                             Icon(Icons.Rounded.Usb, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("USB ile Bağlan", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                            Text(s.connectUsb, fontWeight = FontWeight.Bold, fontSize = 15.sp)
                         }
                     }
                 }
@@ -313,7 +388,7 @@ fun BTBridgeScreen(
                         Icon(Icons.Rounded.Tune, contentDescription = null, tint = SkyAccent)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Jitter Tampon Profili",
+                            text = s.jitterSectionTitle,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = TextPrimary,
@@ -341,18 +416,13 @@ fun BTBridgeScreen(
                             ) {
                                 Column {
                                     Text(
-                                        text = profile.label,
+                                        text = s.jitterLabels[profile] ?: profile.label,
                                         color = if (selected) EmeraldPrimary else TextPrimary,
                                         fontWeight = FontWeight.SemiBold,
                                         fontSize = 14.sp,
                                     )
                                     Text(
-                                        text = when (profile) {
-                                            JitterProfile.ULTRA_LOW -> "Kablolu USB için en düşük gecikme"
-                                            JitterProfile.BALANCED -> "Günlük kullanım ve video için ideal"
-                                            JitterProfile.STABLE -> "Wi-Fi veya yoğun ağda sıfır cızırtı"
-                                            JitterProfile.WIFI_SAFE -> "Zayıf / 2.4 GHz Wi-Fi ve BT kulaklık için sıfır kopma"
-                                        },
+                                        text = s.jitterDescriptions[profile] ?: "",
                                         color = TextMuted,
                                         fontSize = 11.sp,
                                     )
@@ -386,7 +456,7 @@ fun BTBridgeScreen(
                         Icon(Icons.Rounded.Wifi, contentDescription = null, tint = SkyAccent)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "İkincil Mod: Yerel Wi-Fi",
+                            text = s.wifiModeTitle,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = TextPrimary,
@@ -400,7 +470,7 @@ fun BTBridgeScreen(
                         OutlinedTextField(
                             value = wifiIpInput,
                             onValueChange = { wifiIpInput = it },
-                            label = { Text("PC IP Adresi") },
+                            label = { Text(s.pcIpLabel) },
                             singleLine = true,
                             modifier = Modifier.weight(2f),
                             colors = OutlinedTextFieldDefaults.colors(
@@ -413,7 +483,7 @@ fun BTBridgeScreen(
                         OutlinedTextField(
                             value = wifiPortInput,
                             onValueChange = { wifiPortInput = it.filter(Char::isDigit) },
-                            label = { Text("Port") },
+                            label = { Text(s.portLabel) },
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             modifier = Modifier.weight(1f),
@@ -434,7 +504,7 @@ fun BTBridgeScreen(
                             border = BorderStroke(1.dp, RoseError),
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = RoseError),
                         ) {
-                            Text("Wi-Fi Bağlantısını Kes", fontWeight = FontWeight.SemiBold)
+                            Text(s.disconnectWifi, fontWeight = FontWeight.SemiBold)
                         }
                     } else {
                         OutlinedButton(
@@ -451,7 +521,7 @@ fun BTBridgeScreen(
                         ) {
                             Icon(Icons.Rounded.Speed, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Wi-Fi ile Bağlan", fontWeight = FontWeight.SemiBold)
+                            Text(s.connectWifi, fontWeight = FontWeight.SemiBold)
                         }
                     }
                 }

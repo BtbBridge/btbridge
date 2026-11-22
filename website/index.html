@@ -4,7 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BTBridge — Windows PC'den Android'e Ultra Düşük Gecikmeli Ses Köprüsü</title>
-    <meta name="description" content="Windows PC sesini USB ADB Reverse veya Yerel Wi-Fi üzerinden Android telefonunuza ve Bluetooth kulaklığınıza sıfıra yakın gecikmeyle aktarın. Yayın sırasında PC hoparlörünü otomatik susturan akıllı ses yönlendirme.">
+    <meta name="description" content="Windows PC sesini USB ADB Reverse veya Yerel Wi-Fi üzerinden Android telefonunuza ve Bluetooth kulaklığınıza sıfıra yakın gecikmeyle aktarın. Tam Türkçe ve İngilizce destekli, GPL-3.0 açık kaynak.">
+    <link rel="canonical" href="https://btbbridge.github.io/btbridge/">
+
+    <!-- Open Graph / Social Share -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BTBridge">
+    <meta property="og:title" content="BTBridge v1.1.0 — Ultra-Low Latency PC to Android Audio Bridge">
+    <meta property="og:description" content="Stream Windows audio to Android & Bluetooth headphones over USB (<10 ms lossless PCM) or Wi-Fi (ADPCM + UDP FEC). Free & GPL-3.0 open source.">
+    <meta property="og:url" content="https://btbbridge.github.io/btbridge/">
+    <meta property="og:image" content="https://btbbridge.github.io/btbridge/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="tr_TR">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BTBridge v1.1.0 — PC to Android Low-Latency Audio Bridge">
+    <meta name="twitter:description" content="Stream Windows audio to Android & Bluetooth headphones over USB (<10 ms) or Wi-Fi. Full TR & EN support.">
+    <meta name="twitter:image" content="https://btbbridge.github.io/btbridge/og-image.png">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "BTBridge",
+      "softwareVersion": "1.1.0",
+      "operatingSystem": "Windows 10, Windows 11, Android 8.0+",
+      "applicationCategory": "MultimediaApplication",
+      "description": "Ultra-low latency Windows PC to Android & Bluetooth audio bridge over USB ADB Reverse and Local Wi-Fi.",
+      "url": "https://btbbridge.github.io/btbridge/",
+      "downloadUrl": "https://github.com/BtbBridge/btbridge/releases/latest",
+      "license": "https://www.gnu.org/licenses/gpl-3.0",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,19 +68,24 @@
                 <img src="logo.png" alt="BTBridge Logo" width="34" height="34" class="brand-logo">
                 <span class="brand-text">
                     <span class="brand-name">BTBridge</span>
-                    <span class="version-pill">v1.0.0</span>
+                    <span class="version-pill">v1.1.0</span>
                 </span>
             </a>
 
             <nav class="nav-links" aria-label="Ana menü">
-                <a href="#ses-yonlendirme">Akıllı Yönlendirme</a>
-                <a href="#ozellikler">Özellikler</a>
-                <a href="#kurulum">Kurulum</a>
-                <a href="#indir">İndir</a>
-                <a href="#sss">SSS</a>
+                <a href="#ses-yonlendirme" data-i18n="nav_routing">Akıllı Yönlendirme</a>
+                <a href="#ozellikler" data-i18n="nav_features">Özellikler</a>
+                <a href="#kurulum" data-i18n="nav_setup">Kurulum</a>
+                <a href="#indir" data-i18n="nav_download">İndir</a>
+                <a href="#sss" data-i18n="nav_faq">SSS</a>
             </nav>
 
             <div class="nav-actions">
+                <div class="lang-switch" role="group" aria-label="Dil seçimi">
+                    <button type="button" class="lang-btn is-active" data-lang-btn="tr">TR</button>
+                    <button type="button" class="lang-btn" data-lang-btn="en">EN</button>
+                </div>
+
                 <a href="https://github.com/BtbBridge/btbridge" target="_blank" rel="noopener noreferrer" class="nav-ghost" data-repo-link>
                     <svg class="icon-sm" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
@@ -52,7 +98,7 @@
                         <polyline points="7 10 12 15 17 10"/>
                         <line x1="12" y1="15" x2="12" y2="3"/>
                     </svg>
-                    <span>Hemen İndir</span>
+                    <span data-i18n="nav_cta">Hemen İndir</span>
                 </a>
                 <button type="button" class="menu-toggle" id="menuToggle" aria-label="Menüyü aç/kapat" aria-expanded="false">
                     <svg class="icon-md" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
@@ -64,11 +110,18 @@
             </div>
         </div>
         <div class="mobile-drawer" id="mobileDrawer">
-            <a href="#ses-yonlendirme">Akıllı Yönlendirme</a>
-            <a href="#ozellikler">Özellikler</a>
-            <a href="#kurulum">Kurulum</a>
-            <a href="#indir">İndir</a>
-            <a href="#sss">SSS</a>
+            <a href="#ses-yonlendirme" data-i18n="nav_routing">Akıllı Yönlendirme</a>
+            <a href="#ozellikler" data-i18n="nav_features">Özellikler</a>
+            <a href="#kurulum" data-i18n="nav_setup">Kurulum</a>
+            <a href="#indir" data-i18n="nav_download">İndir</a>
+            <a href="#sss" data-i18n="nav_faq">SSS</a>
+            <div class="mobile-lang-row">
+                <span data-i18n="mobile_lang_label">Dil / Language</span>
+                <div class="lang-switch" role="group" aria-label="Mobil dil seçimi">
+                    <button type="button" class="lang-btn is-active" data-lang-btn="tr">TR</button>
+                    <button type="button" class="lang-btn" data-lang-btn="en">EN</button>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -78,15 +131,15 @@
             <div class="container">
                 <div class="hero-badge">
                     <span class="pulse-dot" aria-hidden="true"></span>
-                    <span>USB ADB Reverse &amp; Yerel Wi-Fi Ses Köprüsü</span>
+                    <span data-i18n="hero_badge">USB ADB Reverse &amp; Yerel Wi-Fi Ses Köprüsü</span>
                 </div>
 
                 <h1 class="hero-title">
-                    Windows Sesini Telefona &amp;
-                    <span class="text-gradient">Bluetooth Kulaklığa Köprüle</span>
+                    <span data-i18n="hero_title_1">Windows Sesini Telefona &amp;</span>
+                    <span class="text-gradient" data-i18n="hero_title_2">Bluetooth Kulaklığa Köprüle</span>
                 </h1>
 
-                <p class="hero-subtitle">
+                <p class="hero-subtitle" data-i18n-html="hero_subtitle">
                     PC'nizde Bluetooth donanımı olmasa bile oyun, film ve sistem seslerini
                     <strong>48 kHz stereo</strong> kalitesiyle Android telefonunuza aktarın;
                     telefonunuzdaki Bluetooth kulaklıktan sıfıra yakın gecikmeyle dinleyin.
@@ -99,7 +152,7 @@
                             <polyline points="7 10 12 15 17 10"/>
                             <line x1="12" y1="15" x2="12" y2="3"/>
                         </svg>
-                        <span>Windows Kurulumunu İndir (54.6 MB)</span>
+                        <span data-i18n="hero_btn_win">Windows Kurulumunu İndir (54.6 MB)</span>
                     </a>
 
                     <a href="../BTBridge.apk" data-asset="BTBridge.apk" class="btn-secondary">
@@ -107,22 +160,22 @@
                             <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
                             <line x1="12" y1="18" x2="12.01" y2="18"/>
                         </svg>
-                        <span>Android APK İndir (15.7 MB)</span>
+                        <span data-i18n="hero_btn_apk">Android APK İndir (15.6 MB)</span>
                     </a>
                 </div>
 
                 <div class="trust-row">
                     <span class="trust-item">
                         <svg class="icon-xs" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                        Windows 10 / 11 (64-bit)
+                        <span data-i18n="trust_win">Windows 10 / 11 (64-bit)</span>
                     </span>
                     <span class="trust-item">
                         <svg class="icon-xs" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                        Python / JDK Gerektirmez
+                        <span data-i18n="trust_nopy">Python / JDK Gerektirmez</span>
                     </span>
                     <span class="trust-item">
                         <svg class="icon-xs" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                        Ücretsiz &amp; Açık Kaynak
+                        <span data-i18n="trust_oss">GPL-3.0 Açık Kaynak • TR / EN</span>
                     </span>
                 </div>
 
@@ -135,7 +188,7 @@
                                 <div class="pc-titlebar">
                                     <div class="pc-titlebar-left">
                                         <img src="logo.png" alt="" width="16" height="16">
-                                        <span>BTBridge — USB &amp; Wi-Fi Ses Köprüsü</span>
+                                        <span data-i18n="demo_win_title">BTBridge — USB &amp; Wi-Fi Ses Köprüsü</span>
                                     </div>
                                     <div class="pc-titlebar-controls" aria-hidden="true">
                                         <span class="pc-win-btn"></span>
@@ -147,35 +200,35 @@
                                 <div class="pc-body">
                                     <div class="pc-header">
                                         <div>
-                                            <div class="pc-app-title">BTBridge Masaüstü Sunucusu</div>
-                                            <div class="pc-app-sub">WASAPI Loopback • Akıllı Ses Yönlendirme</div>
+                                            <div class="pc-app-title" data-i18n="demo_pc_heading">BTBridge Masaüstü Sunucusu</div>
+                                            <div class="pc-app-sub" data-i18n="demo_pc_sub">WASAPI Loopback • Akıllı Ses Yönlendirme</div>
                                         </div>
                                         <span class="status-badge" id="demoStatusBadge">● Yayın Aktif</span>
                                     </div>
 
                                     <div class="telemetry-grid">
                                         <div class="tele-card">
-                                            <div class="tele-label">Gecikme (RTT)</div>
+                                            <div class="tele-label" data-i18n="demo_rtt_lbl">Gecikme (RTT)</div>
                                             <div class="tele-val sky" id="demoRtt">4.2 ms</div>
                                         </div>
                                         <div class="tele-card">
-                                            <div class="tele-label">Veri Hızı</div>
+                                            <div class="tele-label" data-i18n="demo_rate_lbl">Veri Hızı</div>
                                             <div class="tele-val emerald" id="demoBitrate">1536 kbps</div>
                                         </div>
                                         <div class="tele-card">
-                                            <div class="tele-label">Bağlı Cihaz</div>
+                                            <div class="tele-label" data-i18n="demo_client_lbl">Bağlı Cihaz</div>
                                             <div class="tele-val white" id="demoClient">127.0.0.1:50005</div>
                                         </div>
                                     </div>
 
                                     <div class="seg-control" role="tablist" aria-label="Bağlantı modu demosu">
                                         <button type="button" class="seg-btn is-active" id="demoModeUsb" role="tab" aria-selected="true">USB (ADB Reverse)</button>
-                                        <button type="button" class="seg-btn" id="demoModeWifi" role="tab" aria-selected="false">Yerel Wi-Fi</button>
+                                        <button type="button" class="seg-btn" id="demoModeWifi" role="tab" aria-selected="false" data-i18n="demo_mode_wifi">Yerel Wi-Fi</button>
                                     </div>
 
                                     <div class="vu-box">
                                         <div class="vu-head">
-                                            <span>Canlı Ses Seviyesi</span>
+                                            <span data-i18n="demo_vu_lbl">Canlı Ses Seviyesi</span>
                                             <span id="demoCodecLabel">48 kHz Stereo PCM</span>
                                         </div>
                                         <div class="vu-row">
@@ -242,13 +295,13 @@
                                     </div>
                                     <div>
                                         <div class="bt-name">Sony WH-1000XM5</div>
-                                        <div class="bt-meta">Bluetooth A2DP • Aktif</div>
+                                        <div class="bt-meta" data-i18n="demo_bt_meta">Bluetooth A2DP • Aktif</div>
                                     </div>
                                 </div>
 
                                 <div class="phone-tech">
                                     <div class="phone-stat">
-                                        <div class="phone-stat-k">Ses Motoru</div>
+                                        <div class="phone-stat-k" data-i18n="demo_engine_lbl">Ses Motoru</div>
                                         <div class="phone-stat-v">AudioTrack</div>
                                     </div>
                                     <div class="phone-stat">
@@ -267,23 +320,23 @@
                 <div class="metrics-grid reveal">
                     <div class="metric-card">
                         <div class="metric-val emerald">&lt; 10 ms</div>
-                        <div class="metric-label">USB Modu Gecikmesi</div>
-                        <p class="metric-desc">ADB Reverse + TCP_NODELAY ile kablo üzerinden anlık iletim.</p>
+                        <div class="metric-label" data-i18n="m1_label">USB Modu Gecikmesi</div>
+                        <p class="metric-desc" data-i18n="m1_desc">ADB Reverse + TCP_NODELAY ile kablo üzerinden anlık iletim.</p>
                     </div>
                     <div class="metric-card">
                         <div class="metric-val sky">48 kHz / 16-bit</div>
-                        <div class="metric-label">Kayıpsız Stereo PCM</div>
-                        <p class="metric-desc">1536 kbps ham ses; oyun, sinema ve müzikte sıfır sıkıştırma kaybı.</p>
+                        <div class="metric-label" data-i18n="m2_label">Kayıpsız Stereo PCM</div>
+                        <p class="metric-desc" data-i18n="m2_desc">1536 kbps ham ses; oyun, sinema ve müzikte sıfır sıkıştırma kaybı.</p>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-val amber">Akıllı İzolasyon</div>
-                        <div class="metric-label">Sadece Kulaklıkta Ses</div>
-                        <p class="metric-desc">Yayın başlayınca PC çıkışı sessizleşir, bitince otomatik eski çıkışa döner.</p>
+                        <div class="metric-val amber" data-i18n="m3_val">Akıllı İzolasyon</div>
+                        <div class="metric-label" data-i18n="m3_label">Sadece Kulaklıkta Ses</div>
+                        <p class="metric-desc" data-i18n="m3_desc">Yayın başlayınca PC çıkışı sessizleşir, bitince otomatik eski çıkışa döner.</p>
                     </div>
                     <div class="metric-card">
                         <div class="metric-val indigo">4:1 ADPCM + FEC</div>
-                        <div class="metric-label">Wi-Fi Paket Kurtarma</div>
-                        <p class="metric-desc">Kablosuz ağdaki paket kayıplarını UDP FEC ile anında onarır.</p>
+                        <div class="metric-label" data-i18n="m4_label">Wi-Fi Paket Kurtarma</div>
+                        <p class="metric-desc" data-i18n="m4_desc">Kablosuz ağdaki paket kayıplarını UDP FEC ile anında onarır.</p>
                     </div>
                 </div>
             </div>
@@ -293,9 +346,9 @@
         <section id="ses-yonlendirme" class="section reveal">
             <div class="container">
                 <div class="section-head">
-                    <div class="eyebrow">Akıllı Ses Yönlendirme</div>
-                    <h2 class="section-title">Sadece Kulaklığında Ses — PC Hoparlörü Sessiz Kalır</h2>
-                    <p class="section-desc">
+                    <div class="eyebrow" data-i18n="route_eyebrow">Akıllı Ses Yönlendirme</div>
+                    <h2 class="section-title" data-i18n="route_title">Sadece Kulaklığında Ses — PC Hoparlörü Sessiz Kalır</h2>
+                    <p class="section-desc" data-i18n="route_desc">
                         Yayın başladığında bilgisayar hoparlörünüzden veya kablolu kulaklığınızdan çift ses gelmez.
                         BTBridge, sistem ses düzeyinizi bozmadan akışı arka planda sanal/sessiz bir kanala taşır ve işiniz bitince eski çıkışa döner.
                     </p>
@@ -304,27 +357,27 @@
                 <div class="routing-panel">
                     <div class="compare-route-grid">
                         <div class="route-card route-card--old">
-                            <span class="route-tag rose">Klasik Araçlar</span>
-                            <h3>Çift Ses veya Sistem Susturma</h3>
-                            <p>
+                            <span class="route-tag rose" data-i18n="route_old_tag">Klasik Araçlar</span>
+                            <h3 data-i18n="route_old_title">Çift Ses veya Sistem Susturma</h3>
+                            <p data-i18n="route_old_desc">
                                 Ses ya hem bilgisayardan hem telefondan aynı anda yankı yapar ya da Windows sistem sesi kapatıldığı için mikser ayarlarınız bozulur.
                             </p>
                             <div class="route-taskbar">
-                                <span>Hoparlör (USB)</span>
-                                <span style="color: #FDA4AF;">✕ Sistem Sesi Kesildi</span>
+                                <span data-i18n="route_old_dev">Hoparlör (USB)</span>
+                                <span style="color: #FDA4AF;" data-i18n="route_old_state">✕ Sistem Sesi Kesildi</span>
                             </div>
                         </div>
 
                         <div class="route-card route-card--new">
-                            <span class="route-tag emerald">BTBridge Akıllı Yönlendirme</span>
-                            <h3>Temiz İzolasyon, Otomatik Geri Dönüş</h3>
-                            <p>
+                            <span class="route-tag emerald" data-i18n="route_new_tag">BTBridge Akıllı Yönlendirme</span>
+                            <h3 data-i18n="route_new_title">Temiz İzolasyon, Otomatik Geri Dönüş</h3>
+                            <p data-i18n="route_new_desc">
                                 BTBridge varsayılan ses çıkışını geçici olarak sanal sürücüye veya HDMI/Monitör çıkışına alır.
                                 PC çıkışı tamamen sessiz kalırken telefonunuzdan tam ses akar.
                             </p>
                             <div class="route-taskbar">
-                                <span>Sanal / HDMI Çıkışı</span>
-                                <span style="color: #34D399;">● İzole Yayın • %100</span>
+                                <span data-i18n="route_new_dev">Sanal / HDMI Çıkışı</span>
+                                <span style="color: #34D399;" data-i18n="route_new_state">● İzole Yayın • %100</span>
                             </div>
                         </div>
                     </div>
@@ -332,18 +385,18 @@
                     <div class="route-steps">
                         <div class="route-step">
                             <div class="route-step-num">1</div>
-                            <h4>Otomatik Çıkış Taraması</h4>
-                            <p>Önce VB-Cable / Virtual Audio / Voicemeeter gibi sanal sürücüleri, yoksa Monitör/HDMI çıkışlarını seçer.</p>
+                            <h4 data-i18n="rs1_title">Otomatik Çıkış Taraması</h4>
+                            <p data-i18n="rs1_desc">Önce VB-Cable / Virtual Audio / Voicemeeter gibi sanal sürücüleri, yoksa Monitör/HDMI çıkışlarını seçer.</p>
                         </div>
                         <div class="route-step">
                             <div class="route-step-num">2</div>
-                            <h4>Bozulmayan Ses Mikseri</h4>
-                            <p>Windows ses düzeyiniz kapatılmadan korunur; WASAPI Loopback sesi sessiz kanaldan kayıpsız yakalar.</p>
+                            <h4 data-i18n="rs2_title">Bozulmayan Ses Mikseri</h4>
+                            <p data-i18n="rs2_desc">Windows ses düzeyiniz kapatılmadan korunur; WASAPI Loopback sesi sessiz kanaldan kayıpsız yakalar.</p>
                         </div>
                         <div class="route-step">
                             <div class="route-step-num">3</div>
-                            <h4>Kusursuz Geri Dönüş</h4>
-                            <p>Yayını durdurduğunuzda veya uygulamayı kapattığınızda Windows önceki varsayılan cihazınıza otomatik döner.</p>
+                            <h4 data-i18n="rs3_title">Kusursuz Geri Dönüş</h4>
+                            <p data-i18n="rs3_desc">Yayını durdurduğunuzda veya uygulamayı kapattığınızda Windows önceki varsayılan cihazınıza otomatik döner.</p>
                         </div>
                     </div>
 
@@ -353,7 +406,7 @@
                             <line x1="12" y1="16" x2="12" y2="12"/>
                             <line x1="12" y1="8" x2="12.01" y2="8"/>
                         </svg>
-                        <div>
+                        <div data-i18n-html="vbcable_tip">
                             <strong>Dizüstü Bilgisayar İpucu:</strong> Monitör/HDMI ses çıkışı olmayan tek hoparlörlü bir laptop kullanıyorsanız,
                             ücretsiz <code>VB-Audio Virtual Cable</code> kurmanız yeterlidir — BTBridge bunu otomatik algılayıp seçer.
                         </div>
@@ -366,9 +419,9 @@
         <section id="ozellikler" class="section reveal">
             <div class="container">
                 <div class="section-head">
-                    <div class="eyebrow">Mühendislik Detayları</div>
-                    <h2 class="section-title">Her Katmanda Düşük Gecikme İçin Tasarlandı</h2>
-                    <p class="section-desc">
+                    <div class="eyebrow" data-i18n="feat_eyebrow">Mühendislik Detayları</div>
+                    <h2 class="section-title" data-i18n="feat_title">Her Katmanda Düşük Gecikme İçin Tasarlandı</h2>
+                    <p class="section-desc" data-i18n="feat_desc">
                         Windows çekirdeğinden Android ses çıkışına kadar gereksiz tamponlama ve kodlama yükü olmadan doğrudan iletim.
                     </p>
                 </div>
@@ -380,8 +433,8 @@
                                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
                             </svg>
                         </div>
-                        <h3>10 ms WASAPI Loopback</h3>
-                        <p>PyAudioWPatch tabanlı yakalama motoru 48 kHz stereo sesi 10 ms'lik (1920 byte) paketler halinde gecikmesiz yakalar.</p>
+                        <h3 data-i18n="f1_title">10 ms WASAPI Loopback</h3>
+                        <p data-i18n="f1_desc">PyAudioWPatch tabanlı yakalama motoru 48 kHz stereo sesi 10 ms'lik (1920 byte) paketler halinde gecikmesiz yakalar.</p>
                     </article>
 
                     <article class="feature-card">
@@ -393,8 +446,8 @@
                                 <line x1="12" y1="20" x2="12.01" y2="20"/>
                             </svg>
                         </div>
-                        <h3>Wi-Fi'da ADPCM + UDP FEC</h3>
-                        <p>Kablosuz modda 4:1 IMA-ADPCM sıkıştırma ve ileri hata düzeltme (FEC) ile ağ dalgalanmalarında bile ses kopmasını önler.</p>
+                        <h3 data-i18n="f2_title">Wi-Fi'da ADPCM + UDP FEC</h3>
+                        <p data-i18n="f2_desc">Kablosuz modda 4:1 IMA-ADPCM sıkıştırma ve ileri hata düzeltme (FEC) ile ağ dalgalanmalarında bile ses kopmasını önler.</p>
                     </article>
 
                     <article class="feature-card">
@@ -404,8 +457,8 @@
                                 <line x1="12" y1="18" x2="12.01" y2="18"/>
                             </svg>
                         </div>
-                        <h3>Kotlin Low-Latency AudioTrack</h3>
-                        <p>Android istemci, URGENT_AUDIO iş parçacığı önceliği, uyarlanabilir JitterBuffer ve 3 ms klik önleyici yumuşak geçiş kullanır.</p>
+                        <h3 data-i18n="f3_title">Kotlin Low-Latency AudioTrack</h3>
+                        <p data-i18n="f3_desc">Android istemci, URGENT_AUDIO iş parçacığı önceliği, uyarlanabilir JitterBuffer ve 3 ms klik önleyici yumuşak geçiş kullanır.</p>
                     </article>
 
                     <article class="feature-card">
@@ -416,8 +469,8 @@
                                 <line x1="12" y1="17" x2="12" y2="21"/>
                             </svg>
                         </div>
-                        <h3>Sistem Tepsisi &amp; Arka Plan</h3>
-                        <p>Pencere kapatıldığında tepsiye küçülür. Android'de ise Foreground Service sayesinde ekran kapalıyken bile kesintisiz çalar.</p>
+                        <h3 data-i18n="f4_title">Sistem Tepsisi &amp; Arka Plan</h3>
+                        <p data-i18n="f4_desc">Pencere kapatıldığında tepsiye küçülür. Android'de ise Foreground Service sayesinde ekran kapalıyken bile kesintisiz çalar.</p>
                     </article>
 
                     <article class="feature-card">
@@ -431,8 +484,8 @@
                                 <path d="M16 12h6"/>
                             </svg>
                         </div>
-                        <h3>Tek Tıkla APK Kurulumu</h3>
-                        <p>Kurulum paketi ADB araçlarını ve BTBridge.apk dosyasını içinde taşır; arayüzden tek tıkla telefona yükleyebilirsiniz.</p>
+                        <h3 data-i18n="f5_title">Tek Tıkla APK Kurulumu</h3>
+                        <p data-i18n="f5_desc">Kurulum paketi ADB araçlarını ve BTBridge.apk dosyasını içinde taşır; arayüzden tek tıkla telefona yükleyebilirsiniz.</p>
                     </article>
 
                     <article class="feature-card">
@@ -441,8 +494,8 @@
                                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                             </svg>
                         </div>
-                        <h3>Canlı RTT &amp; Stereo VU Metre</h3>
-                        <p>Anlık gidiş-dönüş gecikmesini (ms), veri hızını (kbps) ve Sol/Sağ kanal ses seviyelerini gerçek zamanlı takip edin.</p>
+                        <h3 data-i18n="f6_title">Çift Dil (TR / EN) &amp; Canlı VU</h3>
+                        <p data-i18n="f6_desc">Kurulum sihirbazından masaüstü ve Android uygulamasına kadar tam Türkçe ve İngilizce destek; anlık RTT ve VU takibi.</p>
                     </article>
                 </div>
             </div>
@@ -452,56 +505,56 @@
         <section class="section reveal">
             <div class="container">
                 <div class="section-head">
-                    <div class="eyebrow">Karşılaştırma</div>
-                    <h2 class="section-title">Alternatiflere Göre Nerede Duruyor?</h2>
+                    <div class="eyebrow" data-i18n="cmp_eyebrow">Karşılaştırma</div>
+                    <h2 class="section-title" data-i18n="cmp_title">Alternatiflere Göre Nerede Duruyor?</h2>
                 </div>
 
                 <div class="table-scroll">
                     <table class="compare-table">
                         <thead>
                             <tr>
-                                <th>Özellik</th>
-                                <th class="col-highlight">BTBridge (USB)</th>
-                                <th>BTBridge (Wi-Fi)</th>
-                                <th>USB Bluetooth Dongle</th>
-                                <th>Klasik Ses Uygulamaları</th>
+                                <th data-i18n="th_feat">Özellik</th>
+                                <th class="col-highlight" data-i18n="th_usb">BTBridge (USB)</th>
+                                <th data-i18n="th_wifi">BTBridge (Wi-Fi)</th>
+                                <th data-i18n="th_dongle">USB Bluetooth Dongle</th>
+                                <th data-i18n="th_other">Klasik Ses Uygulamaları</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Aktarım Gecikmesi</td>
-                                <td class="col-highlight check-yes">&lt; 10 ms (Anlık)</td>
+                                <td data-i18n="tr_lat">Aktarım Gecikmesi</td>
+                                <td class="col-highlight check-yes" data-i18n="tr_lat_usb">&lt; 10 ms (Anlık)</td>
                                 <td class="check-yes">15 – 25 ms</td>
                                 <td class="check-mid">40 – 180 ms</td>
                                 <td class="check-no">60 – 250 ms</td>
                             </tr>
                             <tr>
-                                <td>Ses Kalitesi</td>
-                                <td class="col-highlight check-yes">48 kHz Kayıpsız PCM</td>
+                                <td data-i18n="tr_qual">Ses Kalitesi</td>
+                                <td class="col-highlight check-yes" data-i18n="tr_qual_usb">48 kHz Kayıpsız PCM</td>
                                 <td class="check-yes">ADPCM + UDP FEC</td>
-                                <td class="check-mid">SBC / AAC Sıkıştırma</td>
-                                <td class="check-mid">Değişken</td>
+                                <td class="check-mid" data-i18n="tr_qual_dongle">SBC / AAC Sıkıştırma</td>
+                                <td class="check-mid" data-i18n="tr_qual_other">Değişken</td>
                             </tr>
                             <tr>
-                                <td>Otomatik PC Ses İzolasyonu</td>
-                                <td class="col-highlight check-yes">Otomatik (Sanal / HDMI)</td>
-                                <td class="check-yes">Otomatik (Sanal / HDMI)</td>
-                                <td class="check-no">Gerekmez</td>
-                                <td class="check-no">Manuel / Yankı Yapar</td>
+                                <td data-i18n="tr_iso">Otomatik PC Ses İzolasyonu</td>
+                                <td class="col-highlight check-yes" data-i18n="tr_iso_btb">Otomatik (Sanal / HDMI)</td>
+                                <td class="check-yes" data-i18n="tr_iso_btb2">Otomatik (Sanal / HDMI)</td>
+                                <td class="check-no" data-i18n="tr_iso_dongle">Gerekmez</td>
+                                <td class="check-no" data-i18n="tr_iso_other">Manuel / Yankı Yapar</td>
                             </tr>
                             <tr>
-                                <td>Ek Donanım Maliyeti</td>
-                                <td class="col-highlight check-yes">0 TL (Mevcut USB Kablo)</td>
-                                <td class="check-yes">0 TL (Kablosuz)</td>
-                                <td class="check-no">Dongle Gerekli</td>
-                                <td class="check-yes">0 TL</td>
+                                <td data-i18n="tr_cost">Ek Donanım Maliyeti</td>
+                                <td class="col-highlight check-yes" data-i18n="tr_cost_usb">0 TL (Mevcut USB Kablo)</td>
+                                <td class="check-yes" data-i18n="tr_cost_wifi">0 TL (Kablosuz)</td>
+                                <td class="check-no" data-i18n="tr_cost_dongle">Dongle Gerekli</td>
+                                <td class="check-yes" data-i18n="tr_cost_other">0 TL</td>
                             </tr>
                             <tr>
-                                <td>Tek Tıkla ADB APK Kurulumu</td>
-                                <td class="col-highlight check-yes">Dahili</td>
-                                <td class="check-yes">Dahili</td>
-                                <td class="check-no">Uygulanamaz</td>
-                                <td class="check-no">Manuel</td>
+                                <td data-i18n="tr_adb">Tek Tıkla ADB APK Kurulumu</td>
+                                <td class="col-highlight check-yes" data-i18n="tr_adb_yes">Dahili</td>
+                                <td class="check-yes" data-i18n="tr_adb_yes2">Dahili</td>
+                                <td class="check-no" data-i18n="tr_adb_na">Uygulanamaz</td>
+                                <td class="check-no" data-i18n="tr_adb_man">Manuel</td>
                             </tr>
                         </tbody>
                     </table>
@@ -513,15 +566,15 @@
         <section id="kurulum" class="section reveal">
             <div class="container">
                 <div class="section-head">
-                    <div class="eyebrow">Hızlı Başlangıç</div>
-                    <h2 class="section-title">2 Dakikada Köprüyü Kurun</h2>
-                    <p class="section-desc">İster sıfır gecikmeli USB kablo, ister kablosuz Yerel Wi-Fi modunu seçin.</p>
+                    <div class="eyebrow" data-i18n="setup_eyebrow">Hızlı Başlangıç</div>
+                    <h2 class="section-title" data-i18n="setup_title">2 Dakikada Köprüyü Kurun</h2>
+                    <p class="section-desc" data-i18n="setup_desc">İster sıfır gecikmeli USB kablo, ister kablosuz Yerel Wi-Fi modunu seçin.</p>
                 </div>
 
                 <div class="tabs-center">
                     <div class="tabs-bar" role="tablist" aria-label="Kurulum modu">
-                        <button type="button" class="tab-btn is-active" data-setup-tab="usb" role="tab" aria-selected="true">USB Kablo (Önerilen)</button>
-                        <button type="button" class="tab-btn" data-setup-tab="wifi" role="tab" aria-selected="false">Yerel Wi-Fi</button>
+                        <button type="button" class="tab-btn is-active" data-setup-tab="usb" role="tab" aria-selected="true" data-i18n="tab_usb">USB Kablo (Önerilen)</button>
+                        <button type="button" class="tab-btn" data-setup-tab="wifi" role="tab" aria-selected="false" data-i18n="tab_wifi">Yerel Wi-Fi</button>
                     </div>
                 </div>
 
@@ -549,9 +602,9 @@
         <section id="indir" class="section reveal">
             <div class="container">
                 <div class="section-head">
-                    <div class="eyebrow">Doğrulanmış Sürümler • v1.0.0</div>
-                    <h2 class="section-title">İndirme Merkezi</h2>
-                    <p class="section-desc">Tüm kurulum paketleri yerel testlerden geçirilmiş ve SHA-256 doğrulama özetleriyle sunulmuştur.</p>
+                    <div class="eyebrow" data-i18n="dl_eyebrow">Doğrulanmış Sürümler • v1.1.0</div>
+                    <h2 class="section-title" data-i18n="dl_title">İndirme Merkezi</h2>
+                    <p class="section-desc" data-i18n="dl_desc">Tüm kurulum paketleri yerel testlerden geçirilmiş ve SHA-256 doğrulama özetleriyle sunulmuştur.</p>
                 </div>
 
                 <div class="download-grid">
@@ -566,7 +619,7 @@
                                 </div>
                                 <div>
                                     <h3 class="dl-title">BTBridge Windows</h3>
-                                    <div class="dl-sub">Windows 10 / 11 (64-bit) • v1.0.0</div>
+                                    <div class="dl-sub">Windows 10 / 11 (64-bit) • v1.1.0</div>
                                 </div>
                             </div>
                             <span class="version-pill">54.6 MB</span>
@@ -575,24 +628,24 @@
                         <ul class="dl-specs">
                             <li>
                                 <svg class="icon-sm" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                <span>Türkçe Inno Setup kurulum sihirbazı + masaüstü kısayolu</span>
+                                <span data-i18n="win_spec_1">Türkçe / English dil seçimli Inno Setup kurulum sihirbazı</span>
                             </li>
                             <li>
                                 <svg class="icon-sm" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                <span>ADB araçları ve BTBridge.apk paketi kurulum içinde gömülü</span>
+                                <span data-i18n="win_spec_2">ADB araçları ve BTBridge.apk paketi kurulum içinde gömülü</span>
                             </li>
                             <li>
                                 <svg class="icon-sm" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                <span>Python veya harici runtime kurulumu gerektirmez</span>
+                                <span data-i18n="win_spec_3">Python veya harici runtime kurulumu gerektirmez</span>
                             </li>
                         </ul>
 
                         <div class="hash-box">
                             <div class="hash-info">
                                 <div class="hash-label">SHA-256 (BTBridge_Setup.exe)</div>
-                                <div class="hash-val">AAD64C328FBBDE55E4E29FF1916E4186C23E9EB6393109C5A177C01D5C7BA834</div>
+                                <div class="hash-val">1890F2456123E9A592EE601922916F2F066A92B525183DBBFF4866C4B7547B6C</div>
                             </div>
-                            <button type="button" class="copy-btn" data-copy-hash="AAD64C328FBBDE55E4E29FF1916E4186C23E9EB6393109C5A177C01D5C7BA834">Kopyala</button>
+                            <button type="button" class="copy-btn" data-copy-hash="1890F2456123E9A592EE601922916F2F066A92B525183DBBFF4866C4B7547B6C" data-i18n="copy_btn">Kopyala</button>
                         </div>
 
                         <div class="dl-actions">
@@ -602,9 +655,9 @@
                                     <polyline points="7 10 12 15 17 10"/>
                                     <line x1="12" y1="15" x2="12" y2="3"/>
                                 </svg>
-                                <span>BTBridge_Setup.exe İndir (54.6 MB)</span>
+                                <span data-i18n="win_dl_btn">BTBridge_Setup.exe İndir (54.6 MB)</span>
                             </a>
-                            <a href="../BTBridge.exe" data-asset="BTBridge.exe" class="dl-sublink">
+                            <a href="../BTBridge.exe" data-asset="BTBridge.exe" class="dl-sublink" data-i18n="win_port_btn">
                                 Taşınabilir Tekil EXE İndir — BTBridge.exe (35.1 MB)
                             </a>
                         </div>
@@ -622,33 +675,33 @@
                                 </div>
                                 <div>
                                     <h3 class="dl-title">BTBridge Android</h3>
-                                    <div class="dl-sub">Android 8.0+ (API 26+) • v1.0.0</div>
+                                    <div class="dl-sub" data-i18n="apk_sub">Android 8.0+ (API 26+) • v1.1.0</div>
                                 </div>
                             </div>
-                            <span class="version-pill" style="color: var(--sky); background: var(--sky-dim); border-color: rgba(56, 189, 248, 0.3);">15.7 MB</span>
+                            <span class="version-pill" style="color: var(--sky); background: var(--sky-dim); border-color: rgba(56, 189, 248, 0.3);">15.6 MB</span>
                         </div>
 
                         <ul class="dl-specs">
                             <li>
                                 <svg class="icon-sm" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                <span>Kotlin + Jetpack Compose arayüz ve Low-Latency AudioTrack motoru</span>
+                                <span data-i18n="apk_spec_1">İlk açılışta Türkçe / English dil seçimi + anlık TR/EN geçişi</span>
                             </li>
                             <li>
                                 <svg class="icon-sm" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                <span>Uyarlanabilir JitterBuffer + Bluetooth A2DP cihaz takipçisi</span>
+                                <span data-i18n="apk_spec_2">Low-Latency AudioTrack, JitterBuffer + Bluetooth A2DP takipçisi</span>
                             </li>
                             <li>
                                 <svg class="icon-sm" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                <span>Foreground Service ile ekran kilitliyken bile kesintisiz ses</span>
+                                <span data-i18n="apk_spec_3">Foreground Service ile ekran kilitliyken bile kesintisiz ses</span>
                             </li>
                         </ul>
 
                         <div class="hash-box">
                             <div class="hash-info">
                                 <div class="hash-label">SHA-256 (BTBridge.apk)</div>
-                                <div class="hash-val">1EA303AE4710ECF988BFC89B053B92B8ECE916D0EEE35A20A6826C4B09B98A2D</div>
+                                <div class="hash-val">DE7CF62F244BA75555C5FD3C119C903BB2DA015C215691218A69B12E4CE7E5FD</div>
                             </div>
-                            <button type="button" class="copy-btn" data-copy-hash="1EA303AE4710ECF988BFC89B053B92B8ECE916D0EEE35A20A6826C4B09B98A2D">Kopyala</button>
+                            <button type="button" class="copy-btn" data-copy-hash="DE7CF62F244BA75555C5FD3C119C903BB2DA015C215691218A69B12E4CE7E5FD" data-i18n="copy_btn">Kopyala</button>
                         </div>
 
                         <div class="dl-actions">
@@ -658,9 +711,9 @@
                                     <polyline points="7 10 12 15 17 10"/>
                                     <line x1="12" y1="15" x2="12" y2="3"/>
                                 </svg>
-                                <span>BTBridge.apk İndir (15.7 MB)</span>
+                                <span data-i18n="apk_dl_btn">BTBridge.apk İndir (15.6 MB)</span>
                             </a>
-                            <span class="dl-sublink" style="text-decoration: none; cursor: default;">
+                            <span class="dl-sublink" style="text-decoration: none; cursor: default;" data-i18n="apk_note">
                                 İsterseniz PC uygulaması içinden tek tıkla telefona kurabilirsiniz
                             </span>
                         </div>
@@ -673,18 +726,18 @@
         <section id="sss" class="section reveal">
             <div class="container">
                 <div class="section-head">
-                    <div class="eyebrow">Sıkça Sorulan Sorular</div>
-                    <h2 class="section-title">Merak Edilenler</h2>
+                    <div class="eyebrow" data-i18n="faq_eyebrow">Sıkça Sorulan Sorular</div>
+                    <h2 class="section-title" data-i18n="faq_title">Merak Edilenler</h2>
                 </div>
 
                 <div class="faq-list">
                     <div class="faq-item is-open">
                         <button type="button" class="faq-q" aria-expanded="true">
-                            <span>Bilgisayarımda Bluetooth alıcısı yoksa çalışır mı?</span>
+                            <span data-i18n="q1">Bilgisayarımda Bluetooth alıcısı yoksa çalışır mı?</span>
                             <svg class="icon-md" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="faq-a">
-                            <div class="faq-a-inner">
+                            <div class="faq-a-inner" data-i18n="a1">
                                 Evet! BTBridge tam olarak bunun için geliştirilmiştir. Ses PC'nizden telefonunuza USB kablo veya Wi-Fi üzerinden aktarılır; Bluetooth kulaklığınız ise telefonunuza bağlı kalır.
                             </div>
                         </div>
@@ -692,11 +745,11 @@
 
                     <div class="faq-item">
                         <button type="button" class="faq-q" aria-expanded="false">
-                            <span>Yayın başladığında PC hoparlöründen veya kulaklığından ses gelmeye devam eder mi?</span>
+                            <span data-i18n="q2">Yayın başladığında PC hoparlöründen veya kulaklığından ses gelmeye devam eder mi?</span>
                             <svg class="icon-md" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="faq-a">
-                            <div class="faq-a-inner">
+                            <div class="faq-a-inner" data-i18n="a2">
                                 Hayır. BTBridge yayın başladığında Windows ses düzeyinizi kapatmadan varsayılan çıkışı geçici olarak sanal sürücüye (VB-Cable vb.) veya Monitör/HDMI çıkışına yönlendirir. Yayını durdurduğunuzda eski çıkışınıza otomatik olarak geri döner.
                             </div>
                         </div>
@@ -704,11 +757,11 @@
 
                     <div class="faq-item">
                         <button type="button" class="faq-q" aria-expanded="false">
-                            <span>Dizüstü bilgisayarımda sadece tek hoparlör görünüyor, ne yapmalıyım?</span>
+                            <span data-i18n="q3">Dizüstü bilgisayarımda sadece tek hoparlör görünüyor, ne yapmalıyım?</span>
                             <svg class="icon-md" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="faq-a">
-                            <div class="faq-a-inner">
+                            <div class="faq-a-inner" data-i18n="a3">
                                 Ücretsiz VB-Audio Virtual Cable sürücüsünü yüklemeniz yeterlidir. BTBridge kurulu sanal sürücüyü öncelikli olarak algılar ve ses çıkışını otomatik oraya yönlendirir.
                             </div>
                         </div>
@@ -716,11 +769,11 @@
 
                     <div class="faq-item">
                         <button type="button" class="faq-q" aria-expanded="false">
-                            <span>USB ve Wi-Fi modları arasındaki temel fark nedir?</span>
+                            <span data-i18n="q4">USB ve Wi-Fi modları arasındaki temel fark nedir?</span>
                             <svg class="icon-md" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="faq-a">
-                            <div class="faq-a-inner">
+                            <div class="faq-a-inner" data-i18n="a4">
                                 USB (ADB Reverse) modu 1536 kbps kayıpsız 48 kHz PCM kullanır ve &lt;10 ms gecikme sunar. Yerel Wi-Fi modu ise kablo gerektirmez, bant genişliğini verimli kullanmak için 4:1 IMA-ADPCM sıkıştırma ve paket kaybını önleyen UDP FEC protokolü ile çalışır.
                             </div>
                         </div>
@@ -728,12 +781,12 @@
 
                     <div class="faq-item">
                         <button type="button" class="faq-q" aria-expanded="false">
-                            <span>Python veya Android Studio kurmam gerekiyor mu?</span>
+                            <span data-i18n="q5">Python veya Android Studio kurmam gerekiyor mu?</span>
                             <svg class="icon-md" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="faq-a">
-                            <div class="faq-a-inner">
-                                Hayır. Windows kurulum sihirbazı (`BTBridge_Setup.exe`) gerekli tüm kütüphaneleri, ADB araçlarını ve Android APK'sını tek paket halinde sunar.
+                            <div class="faq-a-inner" data-i18n="a5">
+                                Hayır. Windows kurulum sihirbazı (BTBridge_Setup.exe) gerekli tüm kütüphaneleri, ADB araçlarını ve Android APK'sını tek paket halinde sunar.
                             </div>
                         </div>
                     </div>
@@ -747,12 +800,13 @@
         <div class="container footer-inner">
             <div class="footer-brand">
                 <img src="logo.png" alt="BTBridge" width="24" height="24">
-                <span><strong>BTBridge</strong> v1.0.0 • Windows PC &rarr; Android Düşük Gecikmeli Ses Köprüsü</span>
+                <span data-i18n="footer_brand">BTBridge v1.1.0 • Windows PC → Android Düşük Gecikmeli Ses Köprüsü</span>
             </div>
             <div class="footer-links">
-                <a href="#ses-yonlendirme">Akıllı Yönlendirme</a>
-                <a href="#ozellikler">Özellikler</a>
-                <a href="#indir">İndir</a>
+                <a href="#ses-yonlendirme" data-i18n="nav_routing">Akıllı Yönlendirme</a>
+                <a href="#ozellikler" data-i18n="nav_features">Özellikler</a>
+                <a href="#indir" data-i18n="nav_download">İndir</a>
+                <a href="https://github.com/BtbBridge/btbridge/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" data-license-link data-i18n="footer_license">GPL-3.0 Lisans</a>
                 <a href="https://github.com/BtbBridge/btbridge" target="_blank" rel="noopener noreferrer" data-repo-link>GitHub</a>
             </div>
         </div>

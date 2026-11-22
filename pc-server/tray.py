@@ -36,6 +36,16 @@ def _load_tray_image() -> Image.Image:
     return img
 
 
+_DEFAULT_T = {
+    "tray_show": "BTBridge'i Göster",
+    "tray_stop": "Yayını Durdur",
+    "tray_start": "Yayını Başlat",
+    "tray_quit": "Tamamen Çık",
+    "tray_minimized": "BTBridge arka planda çalışmaya devam ediyor.",
+    "tray_tooltip_default": "BTBridge — Ses Köprüsü",
+}
+
+
 class TrayController:
     """Pencere kapatıldığında arka planda çalışan sistem tepsisi yöneticisi."""
 
@@ -45,11 +55,13 @@ class TrayController:
         on_toggle_stream: Callable[[], None],
         on_quit: Callable[[], None],
         is_streaming: Callable[[], bool],
+        translate: Optional[Callable[[str], str]] = None,
     ) -> None:
         self._on_show = on_show
         self._on_toggle_stream = on_toggle_stream
         self._on_quit = on_quit
         self._is_streaming = is_streaming
+        self._tr = translate or (lambda key: _DEFAULT_T.get(key, key))
         self._icon: Optional[pystray.Icon] = None
         self._notified_once = False
 
@@ -58,23 +70,31 @@ class TrayController:
             return
         image = _load_tray_image()
         menu = Menu(
-            MenuItem("BTBridge'i Göster", lambda _icon, _item: self._on_show(), default=True),
+            MenuItem(lambda _item: self._tr("tray_show"), lambda _icon, _item: self._on_show(), default=True),
             MenuItem(
-                lambda _item: "Yayını Durdur" if self._is_streaming() else "Yayını Başlat",
+                lambda _item: self._tr("tray_stop") if self._is_streaming() else self._tr("tray_start"),
                 lambda _icon, _item: self._on_toggle_stream(),
             ),
             Menu.SEPARATOR,
-            MenuItem("Tamamen Çık", lambda _icon, _item: self._on_quit()),
+            MenuItem(lambda _item: self._tr("tray_quit"), lambda _icon, _item: self._on_quit()),
         )
-        self._icon = pystray.Icon("BTBridge", image, "BTBridge — Ses Köprüsü", menu)
+        self._icon = pystray.Icon("BTBridge", image, self._tr("tray_tooltip_default"), menu)
         self._icon.run_detached()
+
+    def refresh_menu(self) -> None:
+        if self._icon is None:
+            return
+        try:
+            self._icon.update_menu()
+        except Exception:
+            pass
 
     def notify_minimized(self) -> None:
         if self._icon is None or self._notified_once:
             return
         self._notified_once = True
         try:
-            self._icon.notify("BTBridge arka planda çalışmaya devam ediyor.", "BTBridge")
+            self._icon.notify(self._tr("tray_minimized"), "BTBridge")
         except Exception:
             pass
 

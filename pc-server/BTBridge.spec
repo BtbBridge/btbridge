@@ -11,6 +11,7 @@ hiddenimports = [
     "audio_control",
     "audioop",
     "dsp",
+    "i18n",
     "protocol",
     "server",
     "tray",

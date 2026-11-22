@@ -1,0 +1,19 @@
+BTBridge — Windows PC -> Android Low-Latency Audio Bridge
+
+This wizard installs the BTBridge desktop application, Android connection tools (ADB), and the Android companion app (BTBridge.apk). Python, JDK, or Android Studio are NOT required.
+
+QUICK START (USB CABLE — LOWEST LATENCY):
+1. On your Android phone, enable "USB Debugging" under Settings > Developer Options.
+2. Connect your phone via USB cable and tap "Allow" on the USB debugging prompt.
+3. Launch BTBridge from the desktop shortcut and click "Install APK to Phone" (or check the install option at the end of setup).
+4. Click "Start Streaming" on your PC (your PC speakers/headphones are routed to a silent channel automatically).
+5. Open BTBridge on your phone and tap "Connect via USB".
+
+LOCAL WI-FI MODE (WIRELESS):
+1. Make sure your PC and phone are on the same Wi-Fi network.
+2. Select "Local Wi-Fi" on the PC app and click "Start Streaming".
+3. Enter the displayed local IP address in the Android app and tap "Connect via Wi-Fi".
+
+SYSTEM TRAY TIP:
+- Clicking the "X" button minimizes BTBridge to the Windows system tray and keeps streaming audio in the background.
+- To exit completely, right-click the BTBridge tray icon and select "Quit Completely".

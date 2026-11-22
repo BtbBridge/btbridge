@@ -69,6 +69,9 @@ class MainActivity : ComponentActivity() {
                             AudioBridgeService.setProfile(this, profile)
                         }
                     },
+                    onSelectLanguage = { lang ->
+                        BridgeStateRepository.updateLanguage(this, lang)
+                    },
                 )
             }
         }

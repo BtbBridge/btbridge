@@ -3,10 +3,12 @@ package com.btbridge.app.service
 import android.content.Context
 import com.btbridge.app.audio.JitterProfile
 import com.btbridge.app.protocol.BridgeProtocol
+import com.btbridge.app.ui.AppLanguage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.util.Locale
 
 enum class ConnectionMode {
     USB,
@@ -30,6 +32,8 @@ data class BridgeUiState(
     val bitrateKbps: Int = 0,
     val bufferFillMs: Int = 0,
     val statusMessage: String = "Hazır • USB kablosunu bağlayıp dokunun",
+    val language: AppLanguage = AppLanguage.TR,
+    val needsLanguageChoice: Boolean = false,
 )
 
 object BridgeStateRepository {
@@ -37,6 +41,7 @@ object BridgeStateRepository {
     private const val KEY_WIFI_IP = "wifi_ip"
     private const val KEY_PORT = "port"
     private const val KEY_PROFILE = "jitter_profile"
+    private const val KEY_LANGUAGE = "app_language"
 
     private val _state = MutableStateFlow(BridgeUiState())
     val state: StateFlow<BridgeUiState> = _state.asStateFlow()
@@ -51,11 +56,32 @@ object BridgeStateRepository {
         val savedIp = prefs.getString(KEY_WIFI_IP, "192.168.1.100") ?: "192.168.1.100"
         val savedPort = prefs.getInt(KEY_PORT, BridgeProtocol.DEFAULT_PORT)
         val savedProfile = JitterProfile.fromId(prefs.getString(KEY_PROFILE, null))
+        val savedLang = AppLanguage.fromCode(prefs.getString(KEY_LANGUAGE, null))
+        val defaultLang = if (Locale.getDefault().language.equals("tr", ignoreCase = true)) {
+            AppLanguage.TR
+        } else {
+            AppLanguage.EN
+        }
         _state.update {
             it.copy(
                 wifiIp = savedIp,
                 port = savedPort,
                 jitterProfile = savedProfile,
+                language = savedLang ?: defaultLang,
+                needsLanguageChoice = (savedLang == null),
+            )
+        }
+    }
+
+    fun updateLanguage(context: Context, language: AppLanguage) {
+        context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putString(KEY_LANGUAGE, language.code)
+            .apply()
+        _state.update {
+            it.copy(
+                language = language,
+                needsLanguageChoice = false,
             )
         }
     }

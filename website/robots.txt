@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://btbbridge.github.io/btbridge/sitemap.xml

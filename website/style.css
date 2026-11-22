@@ -208,6 +208,8 @@ main, header, footer {
     border: 1px solid rgba(16, 185, 129, 0.28);
     padding: 2px 8px;
     border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .nav-links {
@@ -233,6 +235,47 @@ main, header, footer {
     align-items: center;
     gap: 12px;
     flex-shrink: 0;
+}
+
+.lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.72);
+    border: 1px solid var(--border);
+}
+
+.lang-btn {
+    padding: 5px 9px;
+    border-radius: 7px;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-2);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.lang-btn:hover {
+    color: var(--text-1);
+}
+
+.lang-btn.is-active {
+    background: var(--sky-dim);
+    color: var(--sky);
+}
+
+.mobile-lang-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px 10px;
+    border-top: 1px solid var(--border);
+    margin-top: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-2);
 }
 
 .nav-ghost {
@@ -291,8 +334,9 @@ main, header, footer {
     flex-direction: column;
     gap: 8px;
     padding: 16px 24px 20px;
-    background: rgba(6, 9, 17, 0.96);
+    background: #060911;
     border-bottom: 1px solid var(--border);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.85);
 }
 
 .mobile-drawer.is-open {
@@ -1706,8 +1750,12 @@ main, header, footer {
 
 @media (max-width: 768px) {
     .nav-links,
-    .nav-ghost {
+    .nav-ghost,
+    .nav-actions .lang-switch {
         display: none;
+    }
+    .nav-inner {
+        gap: 10px;
     }
     .menu-toggle {
         display: inline-flex;
