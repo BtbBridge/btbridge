@@ -1,0 +1,19 @@
+﻿BTBridge — Windows PC -> Android Düşük Gecikmeli Ses Köprüsü
+
+Bu kurulum sihirbazı bilgisayarınıza BTBridge uygulamasını, Android bağlantı araçlarını (ADB) ve telefon uygulamasını (BTBridge.apk) eksiksiz kurar. Python, JDK veya Android Studio kurmanız GEREKMEZ.
+
+HIZLI BAŞLANGIÇ (USB KABLO — EN DÜŞÜK GECİKME):
+1. Android telefonunuzda Ayarlar > Geliştirici Seçenekleri altından "USB Hata Ayıklama"yı açın.
+2. Telefonu USB kablosuyla bilgisayara bağlayın (ekrana çıkan USB hata ayıklama onayına "İzin Ver" deyin).
+3. Masaüstündeki BTBridge kısayolunu açın ve "Telefona APK Kur" butonuna basın (veya kurulum sonunda APK yükleme seçeneğini işaretleyin).
+4. PC'de "Yayını Başlat" butonuna tıklayın (PC kulaklığınız otomatik susturulur).
+5. Telefonda açılan BTBridge uygulamasında "USB ile Bağlan" butonuna dokunun.
+
+YEREL WI-FI MODU (KABLOSUZ):
+1. PC ve telefonunuzun aynı Wi-Fi ağında olduğundan emin olun.
+2. PC'de "Yerel Wi-Fi" modunu seçip "Yayını Başlat" butonuna basın.
+3. Ekranda görünen IP adresini telefondaki Wi-Fi alanına yazıp "Wi-Fi ile Bağlan"a dokunun.
+
+SİSTEM TEPSİSİ BİLGİSİ:
+- Penceredeki "X" kapatma tuşuna bastığınızda BTBridge kapanmaz, Windows sistem tepsisine küçülerek arka planda ses aktarımına devam eder.
+- Tamamen çıkmak için sağ alttaki BTBridge simgesine sağ tıklayıp "Tamamen Çık"ı seçin.
