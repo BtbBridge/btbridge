@@ -13,6 +13,7 @@
     <img src="https://img.shields.io/badge/License-GPL--3.0-f59e0b?style=for-the-badge" alt="GPL-3.0 License" />
   </a>
   <img src="https://img.shields.io/badge/Platform-Windows%2010%2F11%20%2B%20Android%208%2B-6366f1?style=for-the-badge" alt="Platform" />
+  <img src="https://img.shields.io/badge/Discord-.vor__tex13.-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord .vor_tex13." />
 </p>
 
 <p align="center">
@@ -54,6 +55,11 @@
 - `protocol/` — Binary framing and control protocol specification (`PROTOCOL.md`)
 - `website/` — Bilingual landing and download page deployed via GitHub Pages
 
+### Contact & Support
+
+- **Discord:** `.vor_tex13.`
+- **GitHub Issues:** [BtbBridge/btbridge/issues](https://github.com/BtbBridge/btbridge/issues)
+
 ---
 
 <a id="türkçe"></a>
@@ -72,6 +78,11 @@
 - **Akıllı Ses Yönlendirme (`route_silent`):** Yayın sırasında PC hoparlörü veya kablolu kulaklığınızdan çift ses çıkmasını önlemek için sistem ses düzeyinizi bozmadan akışı sanal sürücüye (VB-Cable vb.) veya HDMI/Monitör çıkışına taşır; yayın durduğunda önceki çıkışa otomatik döner.
 - **Tam Çift Dil Desteği (TR / EN):** Windows kurulum sihirbazı, PC uygulaması + sistem tepsisi, Android uygulaması (ilk açılış dil seçimi + başlık çubuğu geçişi) ve web sitesi Türkçe / İngilizce desteklidir.
 - **Kurulum Kolaylığı:** Python veya JDK kurulumu gerektirmez; `BTBridge_Setup.exe` içinde ADB araçları ve `BTBridge.apk` gömülüdür.
+
+### İletişim & Destek
+
+- **Discord:** `.vor_tex13.`
+- **GitHub Issues:** [BtbBridge/btbridge/issues](https://github.com/BtbBridge/btbridge/issues)
 
 ### License / Lisans
 

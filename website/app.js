@@ -165,6 +165,10 @@
             a4: "USB (ADB Reverse) modu 1536 kbps kayıpsız 48 kHz PCM kullanır ve <10 ms gecikme sunar. Yerel Wi-Fi modu ise kablo gerektirmez, bant genişliğini verimli kullanmak için 4:1 IMA-ADPCM sıkıştırma ve paket kaybını önleyen UDP FEC protokolü ile çalışır.",
             q5: "Python veya Android Studio kurmam gerekiyor mu?",
             a5: "Hayır. Windows kurulum sihirbazı (BTBridge_Setup.exe) gerekli tüm kütüphaneleri, ADB araçlarını ve Android APK'sını tek paket halinde sunar.",
+            contact_title: "Geri Bildirim & İletişim",
+            contact_desc: "Hata bildirimi, özellik önerisi veya destek için Discord üzerinden ya da GitHub Issues ile ulaşabilirsin.",
+            contact_issues: "GitHub Issues",
+            discord_copied_toast: "Discord kullanıcı adı kopyalandı: .vor_tex13.",
             footer_brand: "BTBridge v1.1.0 • Windows PC → Android Düşük Gecikmeli Ses Köprüsü",
             footer_license: "GPL-3.0 Lisans",
             setup_steps: {
@@ -349,6 +353,10 @@
             a4: "USB (ADB Reverse) streams uncompressed 48 kHz 1536 kbps PCM with <10 ms latency. Local Wi-Fi requires no cable and uses 4:1 IMA-ADPCM compression plus UDP FEC packet recovery.",
             q5: "Do I need to install Python or Android Studio?",
             a5: "No. BTBridge_Setup.exe bundles everything needed — including the desktop app, ADB tools, and BTBridge.apk.",
+            contact_title: "Feedback & Contact",
+            contact_desc: "Reach out on Discord or open a GitHub Issue for bug reports, feature requests, or support.",
+            contact_issues: "GitHub Issues",
+            discord_copied_toast: "Discord username copied: .vor_tex13.",
             footer_brand: "BTBridge v1.1.0 • Windows PC → Android Low-Latency Audio Bridge",
             footer_license: "GPL-3.0 License",
             setup_steps: {
@@ -481,6 +489,9 @@
         });
         document.querySelectorAll("[data-license-link]").forEach(function (link) {
             link.setAttribute("href", repoUrl + "/blob/main/LICENSE");
+        });
+        document.querySelectorAll("[data-issues-link]").forEach(function (link) {
+            link.setAttribute("href", repoUrl + "/issues");
         });
 
         document.querySelectorAll("[data-asset]").forEach(function (link) {
@@ -699,6 +710,24 @@
                     });
                 } else {
                     fallbackCopy(hash);
+                    onCopied();
+                }
+            });
+        });
+
+        document.querySelectorAll("[data-copy-discord]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var handle = btn.getAttribute("data-copy-discord") || ".vor_tex13.";
+                function onCopied() {
+                    showToast(t("discord_copied_toast"));
+                }
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(handle).then(onCopied).catch(function () {
+                        fallbackCopy(handle);
+                        onCopied();
+                    });
+                } else {
+                    fallbackCopy(handle);
                     onCopied();
                 }
             });

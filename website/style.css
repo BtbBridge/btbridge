@@ -1635,6 +1635,76 @@ main, header, footer {
     line-height: 1.65;
 }
 
+.contact-strip {
+    max-width: 820px;
+    margin: 24px auto 0;
+    padding: 20px 24px;
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    border: 1px solid rgba(88, 101, 242, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.contact-info h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-1);
+}
+
+.contact-info p {
+    margin-top: 4px;
+    font-size: 0.86rem;
+    color: var(--text-2);
+}
+
+.contact-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.discord-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #A5B4FC;
+    background: rgba(88, 101, 242, 0.14);
+    border: 1px solid rgba(88, 101, 242, 0.35);
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.discord-pill:hover {
+    background: rgba(88, 101, 242, 0.24);
+    border-color: rgba(129, 140, 248, 0.65);
+    transform: translateY(-1px);
+}
+
+.contact-issues-btn {
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-1);
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.contact-issues-btn:hover {
+    border-color: var(--border-strong);
+    background: #1E2D48;
+}
+
 /* ==========================================================================
    Footer & Toast
    ========================================================================== */
